@@ -1,4 +1,4 @@
-package app
+package job
 
 import (
 	"fmt"
@@ -25,8 +25,8 @@ func (p *RabbitMQ) String() string {
 	)
 }
 
-// Open open
-func (p *RabbitMQ) Open() (*amqp.Channel, error) {
+// Do do
+func (p *RabbitMQ) Do(f func(*amqp.Channel) error) error {
 	conn, err := amqp.Dial(fmt.Sprintf(
 		"amqp://%s:%s@%s:%d/%s",
 		p.User,
@@ -36,13 +36,13 @@ func (p *RabbitMQ) Open() (*amqp.Channel, error) {
 		p.Virtual,
 	))
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer conn.Close()
 	ch, err := conn.Channel()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer ch.Close()
-	return ch, nil
+	return f(ch)
 }

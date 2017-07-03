@@ -1,10 +1,15 @@
 package app
 
-import "github.com/kapmahc/h2o/lib/mux"
+import (
+	"github.com/kapmahc/air/web/job"
+	"github.com/kapmahc/h2o/lib/mux"
+)
 
 // Plugin plugin
 type Plugin interface {
+	Open(*Config) error
 	Routes() []mux.Route
+	Workers() map[string]job.Handler
 }
 
 var plugins []Plugin

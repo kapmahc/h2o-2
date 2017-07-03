@@ -1,5 +1,7 @@
 package app
 
+import "github.com/kapmahc/h2o/lib/job"
+
 // Server server
 type Server struct {
 	Name  string `toml:"name"`
@@ -23,7 +25,7 @@ type Config struct {
 	Plugins    map[string]bool `toml:"plugins"`
 	Secrets    Secrets         `toml:"secrets"`
 	PostgreSQL PostgreSQL      `toml:"postgresql"`
-	RabbitMQ   RabbitMQ        `toml:"rabbitmq"`
+	RabbitMQ   job.RabbitMQ    `toml:"rabbitmq"`
 	Redis      Redis           `toml:"redis"`
 	SMTP       SMTP            `toml:"smtp"`
 }

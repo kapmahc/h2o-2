@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/kapmahc/h2o/lib/app"
+	"github.com/kapmahc/h2o/lib/job"
 	_ "github.com/kapmahc/h2o/plugins/site"
 )
 
@@ -37,7 +38,7 @@ func TestConfig(t *testing.T) {
 			DbName:   "h2o_dev",
 			SslMode:  "disable",
 		},
-		RabbitMQ: app.RabbitMQ{
+		RabbitMQ: job.RabbitMQ{
 			Host:     "localhost",
 			Port:     5672,
 			User:     "guest",
