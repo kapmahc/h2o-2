@@ -1,5 +1,5 @@
 dist=build
-pkg=github.com/kapmahc/h2o
+pkg=github.com/kapmahc/h2o/lib/app
 
 VERSION=`git rev-parse --short HEAD`
 BUILD_TIME=`date -R`

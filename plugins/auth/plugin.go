@@ -1,8 +1,8 @@
 package auth
 
 import (
-	"github.com/kapmahc/air/web/job"
 	"github.com/kapmahc/h2o/lib/app"
+	"github.com/kapmahc/h2o/lib/job"
 	"github.com/kapmahc/h2o/lib/mux"
 )
 

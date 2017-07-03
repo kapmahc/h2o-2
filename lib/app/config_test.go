@@ -19,7 +19,7 @@ func TestConfig(t *testing.T) {
 	}
 
 	plugins := make(map[string]bool)
-	app.Loop(func(p app.Plugin) error {
+	app.Walk(func(p app.Plugin) error {
 		plugins[reflect.TypeOf(p).Elem().PkgPath()] = true
 		return nil
 	})
