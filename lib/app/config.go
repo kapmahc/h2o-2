@@ -1,6 +1,7 @@
 package app
 
 import (
+	"github.com/kapmahc/h2o/lib/cache"
 	"github.com/kapmahc/h2o/lib/job"
 	"github.com/kapmahc/h2o/lib/orm"
 )
@@ -29,6 +30,6 @@ type Config struct {
 	Secrets    Secrets         `toml:"secrets"`
 	PostgreSQL orm.PostgreSQL  `toml:"postgresql"`
 	RabbitMQ   job.RabbitMQ    `toml:"rabbitmq"`
-	Redis      Redis           `toml:"redis"`
+	Redis      cache.Redis     `toml:"redis"`
 	SMTP       SMTP            `toml:"smtp"`
 }

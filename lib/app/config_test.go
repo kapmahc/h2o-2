@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/kapmahc/h2o/lib/app"
+	"github.com/kapmahc/h2o/lib/cache"
 	"github.com/kapmahc/h2o/lib/job"
 	"github.com/kapmahc/h2o/lib/orm"
 	_ "github.com/kapmahc/h2o/plugins/site"
@@ -46,7 +47,7 @@ func TestConfig(t *testing.T) {
 			Password: "guest",
 			Virtual:  "h2o-dev",
 		},
-		Redis: app.Redis{
+		Redis: cache.Redis{
 			Host: "localhost",
 			Port: 6379,
 			Db:   8,
