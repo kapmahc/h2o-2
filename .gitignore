@@ -1,0 +1,19 @@
+
+# Javascript
+node_modules/
+npm-debug.log
+/package-lock.json
+
+# Build
+/build
+/dist.tar.bz2
+
+# Editor
+.*.swp
+.*.un~
+
+# Test
+/etc
+/tmp
+/config.toml
+/public
