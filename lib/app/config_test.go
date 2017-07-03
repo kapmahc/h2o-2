@@ -7,6 +7,7 @@ import (
 
 	"github.com/kapmahc/h2o/lib/app"
 	"github.com/kapmahc/h2o/lib/job"
+	"github.com/kapmahc/h2o/lib/orm"
 	_ "github.com/kapmahc/h2o/plugins/site"
 )
 
@@ -30,7 +31,7 @@ func TestConfig(t *testing.T) {
 			Jwt:    app.Random(32),
 			Aes:    app.Random(32),
 		},
-		PostgreSQL: app.PostgreSQL{
+		PostgreSQL: orm.PostgreSQL{
 			Host:     "localhost",
 			Port:     5432,
 			User:     "postgres",

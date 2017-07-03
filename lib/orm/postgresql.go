@@ -1,4 +1,4 @@
-package app
+package orm
 
 import (
 	"database/sql"
@@ -15,7 +15,7 @@ type PostgreSQL struct {
 	SslMode  string `toml:"sslmode"`
 }
 
-func (p *PostgreSQL) String() string {
+func (p PostgreSQL) String() string {
 	return fmt.Sprintf(
 		"postgres://%s@%s:%d/%s?sslmode=%s",
 		p.User,

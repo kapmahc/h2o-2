@@ -15,7 +15,7 @@ type RabbitMQ struct {
 	Virtual  string `toml:"virtual"`
 }
 
-func (p *RabbitMQ) String() string {
+func (p RabbitMQ) String() string {
 	return fmt.Sprintf(
 		"postgres://%s@%s:%d/%s",
 		p.User,
