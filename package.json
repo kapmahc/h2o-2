@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/kapmahc/h2o#readme",
   "dependencies": {
-    "bootstrap": "^4.0.0-alpha.6"
+    "bootstrap": "^4.0.0-alpha.6",
+    "clipboard": "^1.7.1",
+    "dropzone": "^5.1.1",
+    "marked": "^0.3.6"
   }
 }
