@@ -5,7 +5,12 @@
 
 # bee
 /h2o.tar.gz
+/h2o
+/lastupdate.tmp
 
 # node
 /node_modules
 /package-lock.json
+
+# test
+/tmp

@@ -15,7 +15,7 @@ gvm use go1.9beta2 --default
 ```bash
 go get -u github.com/kapmahc/h2o
 cd $GOPATH/src/github.com/kapmahc/h2o
-make
+./build.sh
 ```
 
 ## Issues
