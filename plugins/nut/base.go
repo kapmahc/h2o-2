@@ -4,8 +4,10 @@ import (
 	"errors"
 	"html/template"
 	"strconv"
+	"strings"
 
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/validation"
 	"github.com/beego/i18n"
 	"golang.org/x/text/language"
 )
@@ -31,6 +33,34 @@ func (p *Controller) Abort(code int, err error) {
 	} else {
 		p.CustomAbort(code, err.Error())
 	}
+}
+
+// Bind bind params to form and valid it
+func (p *Controller) Bind(fm interface{}) error {
+	if err := p.ParseForm(fm); err != nil {
+		return err
+	}
+	var va validation.Validation
+	ok, err := va.Valid(&fm)
+	if err != nil {
+		return err
+	}
+	var msg []string
+	if !ok {
+		for _, err := range va.Errors {
+			msg = append(msg, err.String())
+		}
+	}
+	return errors.New(strings.Join(msg, "\n"))
+}
+
+// Flash check error
+func (p *Controller) Flash(err error) {
+	flash := beego.NewFlash()
+	if err != nil {
+		flash.Error(err.Error())
+	}
+	flash.Store(&p.Controller)
 }
 
 // SetApplicationLayout using application layout

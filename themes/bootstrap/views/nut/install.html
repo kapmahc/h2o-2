@@ -4,7 +4,7 @@
     <form method="post">
       {{ .xsrf }}
       {{template "shared/form/text-input.html" dict "id" "title" "value" "" "locale" .locale "label" "site.attributes.title" "help" nil}}
-      {{template "shared/form/text-input.html" dict "id" "sub_title" "value" "" "locale" .locale "label" "site.attributes.sub-title" "help" nil}}
+      {{template "shared/form/text-input.html" dict "id" "subTitle" "value" "" "locale" .locale "label" "site.attributes.sub-title" "help" nil}}
       {{template "shared/form/text-input.html" dict "id" "name" "value" "" "locale" .locale "label" "attributes.fullName" "help" nil}}
       {{template "shared/form/email-input.html" dict "id" "email" "value" "" "locale" .locale "label" "attributes.email" "help" "helps.email"}}
       {{template "shared/form/password-input.html" dict "locale" .locale "confirm" true}}

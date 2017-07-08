@@ -88,8 +88,20 @@ func Can(user uint, role, rty string, rid uint) bool {
 	return pl.Enable()
 }
 
+// ConfirmUser confirm user
+func ConfirmUser(id uint, ip, lang string) error {
+	o := orm.NewOrm()
+	if _, err := o.QueryTable(new(User)).Filter("id", id).Update(orm.Params{
+		"confirmed_at": time.Now,
+	}); err != nil {
+		return err
+	}
+
+	return AddLog(id, ip, lang, "auth.logs.confirm")
+}
+
 // AddEmailUser add user by email
-func AddEmailUser(email, password string) (*User, error) {
+func AddEmailUser(email, password, ip, lang string) (*User, error) {
 
 	user := User{
 		Email:        email,
@@ -103,7 +115,8 @@ func AddEmailUser(email, password string) (*User, error) {
 	if _, err := orm.NewOrm().Insert(&user); err != nil {
 		return nil, err
 	}
-	return &user, nil
+	err := AddLog(user.ID, ip, lang, "auth.logs.sign-up")
+	return &user, err
 }
 
 // AddLog add log
