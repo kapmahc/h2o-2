@@ -2,6 +2,7 @@
   <div class="col-md-8 offset-md-2">
     {{template "shared/title.html" .title}}
     <form method="post">
+      {{ .xsrf }}
       {{template "shared/form/text-input.html" dict "id" "title" "value" "" "locale" .locale "label" "site.attributes.title" "help" nil}}
       {{template "shared/form/text-input.html" dict "id" "sub_title" "value" "" "locale" .locale "label" "site.attributes.sub-title" "help" nil}}
       {{template "shared/form/text-input.html" dict "id" "name" "value" "" "locale" .locale "label" "attributes.fullName" "help" nil}}

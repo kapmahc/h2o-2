@@ -2,6 +2,7 @@ package nut
 
 import (
 	"errors"
+	"html/template"
 	"strconv"
 
 	"github.com/astaxie/beego"
@@ -19,6 +20,8 @@ type Controller struct {
 // Prepare prepare
 func (p *Controller) Prepare() {
 	p.detectLocale()
+	p.Data["xsrf_token"] = p.XSRFToken()
+	p.Data["xsrf"] = template.HTML(p.XSRFFormHTML())
 }
 
 // Abort abort http
