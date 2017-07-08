@@ -1,4 +1,4 @@
-package nut
+package site
 
 import (
 	"net/http"
@@ -6,7 +6,20 @@ import (
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
 	"github.com/beego/i18n"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/plugins/nut"
 )
+
+// HomeController home
+type HomeController struct {
+	nut.Controller
+}
+
+// Index home
+// @router / [get]
+func (p *HomeController) Index() {
+	p.TplName = "nut/index.html"
+}
 
 type fmInstall struct {
 	Title                string `form:"title" valid:"Required"`
@@ -26,41 +39,45 @@ func (p *fmInstall) Valid(v *validation.Validation) {
 // Install install
 // @router /install [get,post]
 func (p *HomeController) Install() {
+	// check database
 	o := orm.NewOrm()
-	count, err := o.QueryTable(new(User)).Count()
+	count, err := o.QueryTable(new(auth.User)).Count()
 	if err != nil {
 		p.Abort(http.StatusInternalServerError, err)
 	}
 	if count > 0 {
 		p.Abort(http.StatusForbidden, nil)
 	}
-
+	// http post
 	if p.Ctx.Request.Method == http.MethodPost {
 		var fm fmInstall
 		err := p.Bind(&fm)
 		if err == nil {
-			err = SetMessage(p.Locale, "site.title", fm.Title)
+			err = nut.SetMessage(p.Locale, "site.title", fm.Title)
 		}
 		if err == nil {
-			err = SetMessage(p.Locale, "site.sub-title", fm.SubTitle)
+			err = nut.SetMessage(p.Locale, "site.sub-title", fm.SubTitle)
 		}
 
-		var user *User
+		var user *auth.User
 		ip := p.Ctx.Input.IP()
 		if err == nil {
-			_, err = AddEmailUser(fm.Email, fm.Password, ip, p.Locale)
+			_, err = auth.AddEmailUser(fm.Email, fm.Password, ip, p.Locale)
 		}
 		if err == nil {
-			err = ConfirmUser(user.ID, ip, p.Locale)
+			err = auth.ConfirmUser(user.ID, ip, p.Locale)
 		}
 
-		p.Flash(err)
-		if err == nil {
-			p.Redirect("/", http.StatusFound)
-		}
+		p.Flash(
+			err,
+			p.URLFor("site.HomeController.Index"),
+			p.URLFor("site.HomeController.Install"),
+		)
+		return
 	}
-	p.SetApplicationLayout()
 
+	// http get
+	p.SetApplicationLayout()
 	p.Data["title"] = i18n.Tr(p.Locale, "site.install.title")
 	p.TplName = "nut/install.html"
 }

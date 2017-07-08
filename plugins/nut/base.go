@@ -2,7 +2,9 @@ package nut
 
 import (
 	"errors"
+	"fmt"
 	"html/template"
+	"net/http"
 	"strconv"
 	"strings"
 
@@ -22,6 +24,7 @@ type Controller struct {
 // Prepare prepare
 func (p *Controller) Prepare() {
 	p.detectLocale()
+	beego.ReadFromRequest(&p.Controller)
 	p.Data["xsrf_token"] = p.XSRFToken()
 	p.Data["xsrf"] = template.HTML(p.XSRFFormHTML())
 }
@@ -41,26 +44,31 @@ func (p *Controller) Bind(fm interface{}) error {
 		return err
 	}
 	var va validation.Validation
-	ok, err := va.Valid(&fm)
+	ok, err := va.Valid(fm)
+	var msg []string
 	if err != nil {
 		return err
 	}
-	var msg []string
 	if !ok {
 		for _, err := range va.Errors {
-			msg = append(msg, err.String())
+			msg = append(msg, fmt.Sprintf("%s: %s", err.Field, err.Message))
 		}
+		return errors.New(strings.Join(msg, "</li><li>"))
 	}
-	return errors.New(strings.Join(msg, "\n"))
+	return nil
 }
 
 // Flash check error
-func (p *Controller) Flash(err error) {
-	flash := beego.NewFlash()
-	if err != nil {
-		flash.Error(err.Error())
+func (p *Controller) Flash(err error, sgo, ego string) {
+	if err == nil {
+		p.Redirect(sgo, http.StatusFound)
+		return
 	}
+
+	flash := beego.NewFlash()
+	flash.Error(err.Error())
 	flash.Store(&p.Controller)
+	p.Redirect(ego, http.StatusFound)
 }
 
 // SetApplicationLayout using application layout

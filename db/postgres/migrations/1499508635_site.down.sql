@@ -1,3 +1,4 @@
+DROP TABLE votes;
 DROP TABLE friend_links;
 DROP TABLE cards;
 DROP TABLE links;

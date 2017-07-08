@@ -71,20 +71,6 @@ CREATE UNIQUE INDEX idx_policies
   ON policies (user_id, role_id);
 
 
-CREATE TABLE votes (
-  id            BIGSERIAL PRIMARY KEY,
-  resource_type VARCHAR(255)                NOT NULL,
-  resource_id   BIGINT                      NOT NULL,
-  points        INT                         NOT NULL DEFAULT 0,
-  created_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-CREATE UNIQUE INDEX idx_votes_resources
-  ON votes (resource_type, resource_id);
-CREATE INDEX idx_votes_resource_type
-  ON votes (resource_type);
-
-
 CREATE TABLE attachments (
   id            BIGSERIAL PRIMARY KEY,
   title         VARCHAR(255)                NOT NULL,
