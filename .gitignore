@@ -1,0 +1,11 @@
+
+# vim
+.*.swp
+.*.un~
+
+# bee
+/h2o.tar.gz
+
+# node
+/node_modules
+/package-lock.json
