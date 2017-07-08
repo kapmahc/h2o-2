@@ -62,15 +62,23 @@ func (p *HomeController) Install() {
 		var user *auth.User
 		ip := p.Ctx.Input.IP()
 		if err == nil {
-			_, err = auth.AddEmailUser(fm.Email, fm.Password, ip, p.Locale)
+			user, err = auth.AddEmailUser(fm.Email, fm.Password, ip, p.Locale)
 		}
 		if err == nil {
 			err = auth.ConfirmUser(user.ID, ip, p.Locale)
 		}
 
+		if err == nil {
+			for _, role := range []string{"root", "admin", "member"} {
+				if err = auth.Allow(user.ID, role, auth.DefaultResourceType, auth.DefaultResourceID, 10, 0, 0); err != nil {
+					break
+				}
+			}
+		}
+
 		p.Flash(
 			err,
-			p.URLFor("site.HomeController.Index"),
+			p.URLFor("auth.UsersController.SignIn"),
 			p.URLFor("site.HomeController.Install"),
 		)
 		return

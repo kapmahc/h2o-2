@@ -40,9 +40,9 @@ type User struct {
 	Logo            string
 	SignInCount     uint
 	LastSignInAt    *time.Time
-	LastSignInIP    string `orm:"column(last_sign_in_ip)"`
+	LastSignInIP    *string `orm:"column(last_sign_in_ip)"`
 	CurrentSignInAt *time.Time
-	CurrentSignInIP string `orm:"column(current_sign_in_ip)"`
+	CurrentSignInIP *string `orm:"column(current_sign_in_ip)"`
 	ConfirmedAt     *time.Time
 	LockedAt        *time.Time
 }
@@ -103,11 +103,11 @@ func (p *Attachment) IsPicture() bool {
 // Log log
 type Log struct {
 	nut.Timestamp
+
 	Message string
 	Type    string
-	IP      string
-
-	UserID uint `orm:"column(user_id)"`
+	IP      *string `orm:"column(ip)"`
+	UserID  uint    `orm:"column(user_id)"`
 }
 
 // TableName table name
@@ -116,7 +116,7 @@ func (*Log) TableName() string {
 }
 
 func (p Log) String() string {
-	return fmt.Sprintf("%s: [%s]\t %s", p.CreatedAt.Format(time.ANSIC), p.IP, p.Message)
+	return fmt.Sprintf("%s: [%s]\t %s", p.CreatedAt.Format(time.ANSIC), *p.IP, p.Message)
 }
 
 // Policy policy

@@ -64,7 +64,7 @@ func (p *Controller) Flash(err error, sgo, ego string) {
 		p.Redirect(sgo, http.StatusFound)
 		return
 	}
-
+	beego.Error(err)
 	flash := beego.NewFlash()
 	flash.Error(err.Error())
 	flash.Store(&p.Controller)

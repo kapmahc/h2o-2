@@ -92,7 +92,7 @@ func Can(user uint, role, rty string, rid uint) bool {
 func ConfirmUser(id uint, ip, lang string) error {
 	o := orm.NewOrm()
 	if _, err := o.QueryTable(new(User)).Filter("id", id).Update(orm.Params{
-		"confirmed_at": time.Now,
+		"confirmed_at": time.Now(),
 	}); err != nil {
 		return err
 	}
@@ -123,7 +123,7 @@ func AddEmailUser(email, password, ip, lang string) (*User, error) {
 func AddLog(user uint, ip, lang, code string, args ...interface{}) error {
 	_, err := orm.NewOrm().Insert(&Log{
 		UserID:  user,
-		IP:      ip,
+		IP:      &ip,
 		Message: nut.T(lang, code, args...),
 	})
 	return err
