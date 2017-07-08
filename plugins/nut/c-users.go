@@ -1,7 +1,7 @@
 package nut
 
 // GetUsersSignIn sign in
-// @router /sign-in [get]
+// @router /users/sign-in [get]
 func (p *HomeController) GetUsersSignIn() {
 
 }

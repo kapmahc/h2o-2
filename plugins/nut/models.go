@@ -91,8 +91,6 @@ type User struct {
 	CurrentSignInIP string `orm:"column(current_sign_in_ip)"`
 	ConfirmedAt     *time.Time
 	LockedAt        *time.Time
-
-	Logs []*Log `orm:"reverse(many)"`
 }
 
 // TableName table name
@@ -135,8 +133,7 @@ type Attachment struct {
 	MediaType    string
 	ResourceID   uint `orm:"column(resource_id)"`
 	ResourceType string
-
-	User *User `orm:"rel(fk)"`
+	UserID       uint `orm:"column(user_id)"`
 }
 
 // TableName table name
@@ -156,7 +153,7 @@ type Log struct {
 	Type    string
 	IP      string
 
-	User *User `orm:"rel(fk)"`
+	UserID uint `orm:"column(user_id)"`
 }
 
 // TableName table name
@@ -174,9 +171,8 @@ type Policy struct {
 
 	StartUp  time.Time
 	ShutDown time.Time
-
-	User *User `orm:"rel(fk)"`
-	Role *Role `orm:"rel(fk)"`
+	UserID   uint `orm:"column(user_id)"`
+	RoleID   uint `orm:"column(role_id)"`
 }
 
 //Enable is enable?
@@ -237,6 +233,7 @@ func (*LeaveWord) TableName() string {
 // Link link
 type Link struct {
 	Model
+
 	Loc       string
 	Href      string
 	Label     string
