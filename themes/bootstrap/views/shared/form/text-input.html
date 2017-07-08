@@ -1,0 +1,8 @@
+<div class="form-group">
+  <label for="{{.id}}">{{t .locale .label}}</label>
+  <input type="text" class="form-control" id="{{.id}}" name="{{.id}}" value="{{.value}}" aria-describedby="{{.id}}Help">
+  {{if compare .help nil}}
+  {{else}}
+  <small id="{{.id}}Help" class="form-text text-muted">{{t .locale .help}}</small>
+  {{end}}
+</div>

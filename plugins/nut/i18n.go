@@ -62,5 +62,4 @@ func init() {
 		beego.Error(err)
 	}
 
-	beego.AddFuncMap("t", T)
 }

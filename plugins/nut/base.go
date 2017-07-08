@@ -1,6 +1,9 @@
 package nut
 
 import (
+	"errors"
+	"strconv"
+
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
 	"golang.org/x/text/language"
@@ -18,7 +21,25 @@ func (p *Controller) Prepare() {
 	p.detectLocale()
 }
 
-// DetectLocale detect locale from http request
+// Abort abort http
+func (p *Controller) Abort(code int, err error) {
+	if err == nil {
+		p.CustomAbort(code, strconv.Itoa(code))
+	} else {
+		p.CustomAbort(code, err.Error())
+	}
+}
+
+// SetApplicationLayout using application layout
+func (p *Controller) SetApplicationLayout() {
+	p.Layout = "layouts/application.html"
+}
+
+// SetDashboardLayout using dashboard layout
+func (p *Controller) SetDashboardLayout() {
+	p.Layout = "layouts/dashboard.html"
+}
+
 func (p *Controller) detectLocale() {
 	const key = "locale"
 	write := false
@@ -61,4 +82,23 @@ func (p *Controller) detectLocale() {
 	// Set language properties.
 	p.Locale = lang
 	p.Data[key] = lang
+}
+
+func init() {
+	beego.AddFuncMap("t", T)
+	beego.AddFuncMap("dict", func(args ...interface{}) (map[string]interface{}, error) {
+		size := len(args)
+		if size%2 != 0 {
+			return nil, errors.New("invalid dict call")
+		}
+		dict := make(map[string]interface{}, size/2)
+		for i := 0; i < size; i += 2 {
+			key, ok := args[i].(string)
+			if !ok {
+				return nil, errors.New("dict keys must be strings")
+			}
+			dict[key] = args[i+1]
+		}
+		return dict, nil
+	})
 }

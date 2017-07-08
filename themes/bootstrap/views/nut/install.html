@@ -1,3 +1,13 @@
-install
-
-{{t .locale "buttons.submit"}}
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    {{template "shared/title.html" .title}}
+    <form method="post">
+      {{template "shared/form/text-input.html" dict "id" "title" "value" "" "locale" .locale "label" "site.attributes.title" "help" nil}}
+      {{template "shared/form/text-input.html" dict "id" "sub_title" "value" "" "locale" .locale "label" "site.attributes.sub-title" "help" nil}}
+      {{template "shared/form/text-input.html" dict "id" "name" "value" "" "locale" .locale "label" "attributes.fullName" "help" nil}}
+      {{template "shared/form/email-input.html" dict "id" "email" "value" "" "locale" .locale "label" "attributes.email" "help" "helps.email"}}
+      {{template "shared/form/password-input.html" dict "locale" .locale "confirm" true}}
+      {{template "shared/form/buttons.html" dict "locale" .locale}}
+    </form>
+  </div>
+</div>
