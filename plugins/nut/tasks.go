@@ -1,4 +1,4 @@
-package base
+package nut
 
 import "github.com/astaxie/beego/toolbox"
 

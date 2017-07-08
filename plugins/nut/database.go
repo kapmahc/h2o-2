@@ -1,4 +1,4 @@
-package base
+package nut
 
 import (
 	"database/sql"
