@@ -8,7 +8,7 @@ type HomeController struct {
 // GetInstall install
 // @router /install [get]
 func (p *HomeController) GetInstall() {
-	p.TplName = "site/install.html"
+	p.TplName = "nut/install.html"
 }
 
 // PostInstall install

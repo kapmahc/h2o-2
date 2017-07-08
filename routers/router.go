@@ -14,12 +14,7 @@ import (
 )
 
 func init() {
-	for _, v := range []beego.ControllerInterface{
-		&nut.UsersController{},
-		&nut.HomeController{},
-	} {
-		beego.Include(v)
-	}
+	beego.Include(&nut.HomeController{})
 
 	for k, v := range map[string]beego.ControllerInterface{
 		"/forum":    &forum.Controller{},

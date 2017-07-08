@@ -63,6 +63,7 @@ func CheckDb() error {
 	}
 
 	toolbox.AddHealthCheck("database", &databaseCheck{driver: drv, source: url})
+	orm.Debug = beego.BConfig.RunMode != beego.PROD
 	orm.RegisterDataBase("default", drv, url)
 	return nil
 }

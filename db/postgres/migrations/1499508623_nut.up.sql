@@ -3,7 +3,7 @@ CREATE TABLE users (
   name               VARCHAR(32)                 NOT NULL,
   email              VARCHAR(255)                NOT NULL,
   uid                VARCHAR(36)                 NOT NULL,
-  password           bytea,
+  password           VARCHAR(255),
   provider_id        VARCHAR(255)                NOT NULL,
   provider_type      VARCHAR(32)                 NOT NULL,
   home               VARCHAR(255),

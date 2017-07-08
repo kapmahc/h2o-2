@@ -1,57 +1,48 @@
 package nut
 
 import (
+	"bytes"
+	"errors"
+	"fmt"
+	"html/template"
 	"os"
 	"path/filepath"
 
 	"github.com/astaxie/beego"
 	"github.com/beego/i18n"
-	"golang.org/x/text/language"
 )
 
-// DetectLocale detect locale from http request
-func (p *Controller) detectLocale() {
-	const key = "locale"
-	write := false
-
-	// 1. Check URL arguments.
-	lang := p.Input().Get(key)
-
-	// 2. Get language information from cookies.
-	if len(lang) == 0 {
-		lang = p.Ctx.GetCookie(key)
-	} else {
-		write = true
-	}
-
-	// 3. Get language information from 'Accept-Language'.
-	if len(lang) == 0 {
-		al := p.Ctx.Request.Header.Get("Accept-Language")
-		if len(al) > 4 {
-			lang = al[:5] // Only compare first 5 letters.
-		}
-		write = true
-	}
-
-	// 4. Default language is English.
-	tag, err := language.Parse(lang)
+// T translate string
+func T(lang, code string, args ...interface{}) string {
+	msg, err := GetMessage(lang, code)
 	if err != nil {
-		beego.Error(err)
+		return i18n.Tr(lang, code, args...)
 	}
-	lang = tag.String()
-	if !i18n.IsExist(lang) {
-		lang = language.AmericanEnglish.String()
-		write = true
-	}
+	return fmt.Sprintf(msg, args...)
+}
 
-	// Save language information in cookies.
-	if write {
-		p.Ctx.SetCookie(key, lang, 1<<31-1, "/")
+// E translate error
+func E(lang, code string, args ...interface{}) error {
+	msg, err := GetMessage(lang, code)
+	if err != nil {
+		return errors.New(i18n.Tr(lang, code, args...))
 	}
+	return fmt.Errorf(msg, args...)
+}
 
-	// Set language properties.
-	p.Locale = lang
-	p.Data[key] = lang
+// H translate html template
+func H(lang, code string, obj interface{}) (string, error) {
+	msg, err := GetMessage(lang, code)
+	if err != nil {
+		msg = i18n.Tr(lang, code)
+	}
+	tpl, err := template.New("").Parse(msg)
+	if err != nil {
+		return "", err
+	}
+	var buf bytes.Buffer
+	err = tpl.Execute(&buf, obj)
+	return buf.String(), err
 }
 
 func init() {
@@ -70,4 +61,6 @@ func init() {
 	}); err != nil {
 		beego.Error(err)
 	}
+
+	beego.AddFuncMap("t", T)
 }

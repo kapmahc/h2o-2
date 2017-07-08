@@ -1,0 +1,5 @@
+package nut
+
+func init() {
+
+}
