@@ -10,12 +10,18 @@ gvm install go1.9beta2 -B
 gvm use go1.9beta2 --default
 ```
 
-## Build
+## For deployment
 
 ```bash
 go get -u github.com/kapmahc/h2o
 cd $GOPATH/src/github.com/kapmahc/h2o
 ./build.sh
+```
+
+## For development
+```bash
+go get -u -d github.com/mattes/migrate/cli github.com/lib/pq
+go build -tags 'postgres' -o /usr/local/bin/migrate github.com/mattes/migrate/cli
 ```
 
 ## Issues
