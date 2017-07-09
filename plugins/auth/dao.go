@@ -7,6 +7,20 @@ import (
 	"github.com/kapmahc/h2o/plugins/nut"
 )
 
+// GetUserByEmail get user by email
+func GetUserByEmail(email string) (*User, error) {
+	var it User
+	err := orm.NewOrm().QueryTable(&it).Filter("email", email).One(&it)
+	return &it, err
+}
+
+// GetUserByUID get user by uid
+func GetUserByUID(uid string) (*User, error) {
+	var it User
+	err := orm.NewOrm().QueryTable(&it).Filter("uid", uid).One(&it)
+	return &it, err
+}
+
 func getRole(role, rty string, rid uint) (*Role, error) {
 	var it Role
 	o := orm.NewOrm()
@@ -102,6 +116,19 @@ func ConfirmUser(id uint, ip, lang string) error {
 
 // AddEmailUser add user by email
 func AddEmailUser(email, password, ip, lang string) (*User, error) {
+	o := orm.NewOrm()
+
+	cnd := orm.NewCondition()
+
+	count, err := o.QueryTable(new(User)).
+		SetCond(cnd.And("email", email).OrCond(cnd.And("provider_type", UserTypeEmail).And("provider_id", email))).
+		Count()
+	if err != nil {
+		return nil, err
+	}
+	if count > 0 {
+		return nil, nut.E(lang, "auth.errors.email-already-exist")
+	}
 
 	user := User{
 		Email:        email,
@@ -112,10 +139,10 @@ func AddEmailUser(email, password, ip, lang string) (*User, error) {
 	user.SetUID()
 	user.SetGravatarLogo()
 
-	if _, err := orm.NewOrm().Insert(&user); err != nil {
+	if _, err = o.Insert(&user); err != nil {
 		return nil, err
 	}
-	err := AddLog(user.ID, ip, lang, "auth.logs.sign-up")
+	err = AddLog(user.ID, ip, lang, "auth.logs.sign-up")
 	return &user, err
 }
 

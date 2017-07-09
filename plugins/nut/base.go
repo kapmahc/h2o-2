@@ -58,17 +58,22 @@ func (p *Controller) Bind(fm interface{}) error {
 	return nil
 }
 
-// Flash check error
-func (p *Controller) Flash(err error, sgo, ego string) {
-	if err == nil {
-		p.Redirect(sgo, http.StatusFound)
-		return
-	}
+// Success success flash
+func (p *Controller) Success(msg, url string) {
+	flash := beego.NewFlash()
+	flash.Notice(msg)
+	flash.Store(&p.Controller)
+	p.Redirect(url, http.StatusFound)
+}
+
+// Fail flash
+func (p *Controller) Fail(err error, url string) {
 	beego.Error(err)
+
 	flash := beego.NewFlash()
 	flash.Error(err.Error())
 	flash.Store(&p.Controller)
-	p.Redirect(ego, http.StatusFound)
+	p.Redirect(url, http.StatusFound)
 }
 
 // SetApplicationLayout using application layout

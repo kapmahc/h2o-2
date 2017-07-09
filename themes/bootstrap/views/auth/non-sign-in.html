@@ -1,0 +1,18 @@
+<br/>
+<div class="list-group">
+  <a href="{{urlfor "auth.UsersController.SignIn"}}" class="list-group-item list-group-item-action">
+    {{t .locale "auth.users.sign-in.title"}}
+  </a>
+  <a href="{{urlfor "auth.UsersController.SignUp"}}" class="list-group-item list-group-item-action">
+    {{t .locale "auth.users.sign-up.title"}}
+  </a>
+  <a href="{{urlfor "auth.UsersController.ForgotPassword"}}" class="list-group-item list-group-item-action">
+    {{t .locale "auth.users.forgot-password.title"}}
+  </a>
+  <a href="{{urlfor "auth.UsersController.Confirm"}}" class="list-group-item list-group-item-action">
+    {{t .locale "auth.users.confirm.title"}}
+  </a>
+  <a href="{{urlfor "auth.UsersController.Unlock"}}" class="list-group-item list-group-item-action">
+    {{t .locale "auth.users.unlock.title"}}
+  </a>
+</div>

@@ -1,0 +1,8 @@
+{{template "shared/title.html" .title}}
+<form method="post">
+  {{ .xsrf }}
+  {{template "shared/form/email-input.html" dict "id" "email" "value" "" "locale" .locale "label" "attributes.email" "help" nil}}
+  {{template "shared/form/password-input.html" dict "locale" .locale "confirm" false}}
+  {{template "shared/form/buttons.html" dict "locale" .locale}}
+</form>
+{{template "auth/non-sign-in.html" .}}

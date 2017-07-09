@@ -31,7 +31,7 @@ func Set(key string, val interface{}, enc bool) error {
 }
 
 // Get get setting key=>val
-func Get(key string, val interface{}, enc bool) error {
+func Get(key string, val interface{}) error {
 	o := orm.NewOrm()
 	var it Setting
 	err := o.QueryTable(&it).Filter("key", key).One(&it, "val")

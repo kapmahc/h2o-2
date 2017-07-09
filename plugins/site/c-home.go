@@ -18,7 +18,7 @@ type HomeController struct {
 // Index home
 // @router / [get]
 func (p *HomeController) Index() {
-	p.TplName = "nut/index.html"
+	p.TplName = "site/index.html"
 }
 
 type fmInstall struct {
@@ -76,11 +76,11 @@ func (p *HomeController) Install() {
 			}
 		}
 
-		p.Flash(
-			err,
-			p.URLFor("auth.UsersController.SignIn"),
-			p.URLFor("site.HomeController.Install"),
-		)
+		if err == nil {
+			p.Redirect(p.URLFor("auth.UsersController.SignIn"), http.StatusFound)
+		} else {
+			p.Fail(err, p.URLFor("site.HomeController.Install"))
+		}
 		return
 	}
 
