@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
 	"github.com/kapmahc/epub"
-	"github.com/kapmahc/fly/engines/auth"
+	"github.com/kapmahc/h2o/plugins/auth"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
@@ -21,12 +21,12 @@ const (
 	SEP = ";"
 )
 
-func (p *Engine) root() string {
+func (p *Plugin) root() string {
 	return filepath.Join("tmp", "books")
 }
 
 // Shell shell commands
-func (p *Engine) Shell() []cli.Command {
+func (p *Plugin) Shell() []cli.Command {
 	return []cli.Command{
 		{
 			Name:  "books",
@@ -43,7 +43,7 @@ func (p *Engine) Shell() []cli.Command {
 	}
 }
 
-func (p *Engine) scanBook(*cli.Context, *inject.Graph) error {
+func (p *Plugin) scanBook(*cli.Context, *inject.Graph) error {
 	root := p.root()
 	var count int64
 	var total int64

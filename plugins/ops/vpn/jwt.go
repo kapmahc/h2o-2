@@ -5,10 +5,10 @@ import (
 	"time"
 
 	"github.com/SermoDigital/jose/jws"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
 )
 
-func (p *Engine) generateToken(years int) ([]byte, error) {
+func (p *Plugin) generateToken(years int) ([]byte, error) {
 	now := time.Now()
 	cm := jws.Claims{}
 	cm.SetNotBefore(now)
@@ -19,7 +19,7 @@ func (p *Engine) generateToken(years int) ([]byte, error) {
 	return jt.Serialize(p.Key)
 }
 
-func (p *Engine) tokenMiddleware(c *gin.Context) {
+func (p *Plugin) tokenMiddleware(c *gin.Context) {
 	tk, err := jws.ParseJWTFromRequest(c.Request)
 	if err == nil {
 		err = tk.Validate(p.Key, p.Method)

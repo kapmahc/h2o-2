@@ -1,8 +1,8 @@
 package forum
 
 import (
-	"github.com/kapmahc/fly/engines/auth"
-	"github.com/kapmahc/fly/web"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/web"
 )
 
 // Article article

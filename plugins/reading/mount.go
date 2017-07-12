@@ -1,13 +1,13 @@
 package reading
 
 import (
-	"github.com/kapmahc/fly/engines/auth"
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/web"
 )
 
 // Mount web mount-points
-func (p *Engine) Mount(rt *gin.Engine) {
+func (p *Plugin) Mount(rt *gin.Engine) {
 	rg := rt.Group("/reading")
 	rg.GET("/books", auth.HTML(p.indexBooks))
 	rg.GET("/books/:id", auth.HTML(p.showBook))

@@ -3,11 +3,11 @@ package mail
 import (
 	"net/http"
 
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/web"
 )
 
-func (p *Engine) indexUsers(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexUsers(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.mail.users.index.title")
 	tpl := "ops-mail-users-index"
 	var items []User
@@ -40,7 +40,7 @@ type fmUserNew struct {
 	DomainID             uint   `form:"domainId"`
 }
 
-func (p *Engine) createUser(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createUser(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.new")
 	tpl := "ops-mail-users-new"
 	var domains []Domain
@@ -76,7 +76,7 @@ type fmUserEdit struct {
 	Enable   bool   `form:"enable"`
 }
 
-func (p *Engine) updateUser(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateUser(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.mail.users.edit.title")
 	tpl := "ops-mail-users-edit"
 	id := c.Param("id")
@@ -113,7 +113,7 @@ type fmUserResetPassword struct {
 	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
 }
 
-func (p *Engine) resetUserPassword(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) resetUserPassword(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.mail.users.reset-password.title")
 	tpl := "ops-mail-users-reset-password"
 	id := c.Param("id")
@@ -153,7 +153,7 @@ type fmUserChangePassword struct {
 	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=NewPassword"`
 }
 
-func (p *Engine) changeUserPassword(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) changeUserPassword(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.mail.users.change-password.title")
 	tpl := "ops-mail-users-change-password"
 
@@ -185,7 +185,7 @@ func (p *Engine) changeUserPassword(c *gin.Context, lang string, data gin.H) (st
 	return tpl, nil
 }
 
-func (p *Engine) destroyUser(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyUser(c *gin.Context) (interface{}, error) {
 	var user User
 	if err := p.Db.
 		Where("id = ?", c.Param("id")).First(&user).Error; err != nil {

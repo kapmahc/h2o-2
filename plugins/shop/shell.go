@@ -1,14 +1,14 @@
 package shop
 
 import (
-	log "github.com/Sirupsen/logrus"
 	"github.com/facebookgo/inject"
-	"github.com/kapmahc/fly/engines/auth"
+	"github.com/kapmahc/h2o/plugins/auth"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
 // Shell shell commands
-func (p *Engine) Shell() []cli.Command {
+func (p *Plugin) Shell() []cli.Command {
 	return []cli.Command{
 		{
 			Name:  "shop",
@@ -24,7 +24,7 @@ func (p *Engine) Shell() []cli.Command {
 		},
 	}
 }
-func (p *Engine) isTablesEmpty(args ...interface{}) (bool, error) {
+func (p *Plugin) isTablesEmpty(args ...interface{}) (bool, error) {
 	for _, arg := range args {
 		var count int
 		if err := p.Db.Model(arg).Count(&count).Error; err != nil {
@@ -37,7 +37,7 @@ func (p *Engine) isTablesEmpty(args ...interface{}) (bool, error) {
 	}
 	return true, nil
 }
-func (p *Engine) initStates() error {
+func (p *Plugin) initStates() error {
 	if ok, err := p.isTablesEmpty(&Zone{}, &Country{}, &State{}); err != nil || !ok {
 		return err
 	}
@@ -79,7 +79,7 @@ func (p *Engine) initStates() error {
 	return nil
 }
 
-func (p *Engine) initPaymentMethods() error {
+func (p *Plugin) initPaymentMethods() error {
 	if ok, err := p.isTablesEmpty(&PaymentMethod{}); err != nil || !ok {
 		return err
 	}
@@ -110,7 +110,7 @@ func (p *Engine) initPaymentMethods() error {
 	return nil
 }
 
-func (p *Engine) initShippingMethods() error {
+func (p *Plugin) initShippingMethods() error {
 	if ok, err := p.isTablesEmpty(&ShippingMethod{}); err != nil || !ok {
 		return err
 	}
@@ -155,7 +155,7 @@ func (p *Engine) initShippingMethods() error {
 	return nil
 }
 
-func (p *Engine) loadSeed(*cli.Context, *inject.Graph) error {
+func (p *Plugin) loadSeed(*cli.Context, *inject.Graph) error {
 	if err := p.initStates(); err != nil {
 		return err
 	}

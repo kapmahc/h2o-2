@@ -3,10 +3,10 @@ package forum
 import (
 	"net/http"
 
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
 )
 
-func (p *Engine) indexAdminTags(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexAdminTags(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "forum.tags.index.title")
 	tpl := "forum-tags-manage"
 	var tags []Tag
@@ -17,7 +17,7 @@ func (p *Engine) indexAdminTags(c *gin.Context, lang string, data gin.H) (string
 	return tpl, nil
 }
 
-func (p *Engine) indexTags(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexTags(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "forum.tags.index.title")
 	tpl := "forum-tags-index"
 	var tags []Tag
@@ -32,7 +32,7 @@ type fmTag struct {
 	Name string `form:"name" binding:"required,max=255"`
 }
 
-func (p *Engine) createTag(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createTag(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.new")
 	tpl := "forum-tags-new"
 	if c.Request.Method == http.MethodPost {
@@ -50,7 +50,7 @@ func (p *Engine) createTag(c *gin.Context, lang string, data gin.H) (string, err
 	return tpl, nil
 }
 
-func (p *Engine) showTag(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) showTag(c *gin.Context, lang string, data gin.H) (string, error) {
 
 	tpl := "forum-tags-show"
 	var tag Tag
@@ -66,7 +66,7 @@ func (p *Engine) showTag(c *gin.Context, lang string, data gin.H) (string, error
 	return tpl, nil
 }
 
-func (p *Engine) updateTag(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateTag(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.edit")
 	tpl := "forum-tags-edit"
 	id := c.Param("id")
@@ -94,7 +94,7 @@ func (p *Engine) updateTag(c *gin.Context, lang string, data gin.H) (string, err
 	return tpl, nil
 }
 
-func (p *Engine) destroyTag(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyTag(c *gin.Context) (interface{}, error) {
 	var tag Tag
 	if err := p.Db.Where("id = ?", c.Param("id")).First(&tag).Error; err != nil {
 		return nil, err

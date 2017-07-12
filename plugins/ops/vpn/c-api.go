@@ -3,8 +3,8 @@ package vpn
 import (
 	"time"
 
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/web"
 )
 
 type fmSignIn struct {
@@ -12,7 +12,7 @@ type fmSignIn struct {
 	Password string `form:"password" binding:"min=6,max=32"`
 }
 
-func (p *Engine) apiAuth(c *gin.Context) (interface{}, error) {
+func (p *Plugin) apiAuth(c *gin.Context) (interface{}, error) {
 	var fm fmSignIn
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
@@ -39,7 +39,7 @@ type fmStatus struct {
 	Send        float64 `form:"bytes_sent" binding:"required"`
 }
 
-func (p *Engine) apiConnect(c *gin.Context) (interface{}, error) {
+func (p *Plugin) apiConnect(c *gin.Context) (interface{}, error) {
 	var fm fmStatus
 	if err := c.Bind(&fm); err != nil {
 		return nil, err
@@ -69,7 +69,7 @@ func (p *Engine) apiConnect(c *gin.Context) (interface{}, error) {
 	return gin.H{}, nil
 }
 
-func (p *Engine) apiDisconnect(c *gin.Context) (interface{}, error) {
+func (p *Plugin) apiDisconnect(c *gin.Context) (interface{}, error) {
 	var fm fmStatus
 	if err := c.Bind(&fm); err != nil {
 		return nil, err

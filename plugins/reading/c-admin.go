@@ -1,11 +1,11 @@
 package reading
 
 import (
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/web"
 )
 
-func (p *Engine) getAdminStatus(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) getAdminStatus(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "reading.admin.status.title")
 	tpl := "reading-admin-status"
 	var bc int
@@ -24,7 +24,7 @@ func (p *Engine) getAdminStatus(c *gin.Context, lang string, data gin.H) (string
 	return tpl, nil
 }
 
-func (p *Engine) indexAdminBooks(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexAdminBooks(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "reading.admin.books.index.title")
 	tpl := "reading-admin-books-index"
 	var total int64
@@ -48,7 +48,7 @@ func (p *Engine) indexAdminBooks(c *gin.Context, lang string, data gin.H) (strin
 	return tpl, nil
 }
 
-func (p *Engine) destroyAdminBook(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyAdminBook(c *gin.Context) (interface{}, error) {
 	err := p.Db.
 		Where("id = ?", c.Param("id")).
 		Delete(Book{}).Error

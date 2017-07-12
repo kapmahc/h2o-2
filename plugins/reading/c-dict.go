@@ -4,14 +4,14 @@ import (
 	"html/template"
 	"net/http"
 
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
 )
 
 type fmDict struct {
 	Keywords string `form:"keywords" binding:"required,max=255"`
 }
 
-func (p *Engine) formDict(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) formDict(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "reading.dict.index.title")
 	tpl := "reading-dict-index"
 	switch c.Request.Method {

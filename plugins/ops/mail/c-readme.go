@@ -1,8 +1,8 @@
 package mail
 
-import gin "gopkg.in/gin-gonic/gin.v1"
+import "github.com/gin-gonic/gin"
 
-func (p *Engine) getReadme(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) getReadme(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.mail.readme.title")
 	tpl := "ops-mail-readme"
 

@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/kapmahc/fly/engines/auth"
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/web"
 )
 
-func (p *Engine) myComments(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) myComments(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "forum.comments.my.title")
 	tpl := "forum-comments-my"
 
@@ -27,7 +27,7 @@ func (p *Engine) myComments(c *gin.Context, lang string, data gin.H) (string, er
 	return tpl, nil
 }
 
-func (p *Engine) indexComments(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexComments(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "forum.comments.index.title")
 	tpl := "forum-comments-index"
 	var total int64
@@ -57,7 +57,7 @@ type fmCommentAdd struct {
 	ArticleID uint   `form:"articleId" binding:"required"`
 }
 
-func (p *Engine) createComment(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createComment(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.new")
 	tpl := "forum-comments-new"
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
@@ -87,7 +87,7 @@ type fmCommentEdit struct {
 	Type string `form:"type" binding:"required,max=8"`
 }
 
-func (p *Engine) updateComment(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateComment(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.edit")
 	tpl := "forum-comments-edit"
 	cm := c.MustGet("comment").(*Comment)
@@ -112,13 +112,13 @@ func (p *Engine) updateComment(c *gin.Context, lang string, data gin.H) (string,
 	return tpl, nil
 }
 
-func (p *Engine) destroyComment(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyComment(c *gin.Context) (interface{}, error) {
 	comment := c.MustGet("comment").(*Comment)
 	err := p.Db.Delete(comment).Error
 	return gin.H{}, err
 }
 
-func (p *Engine) canEditComment(c *gin.Context) {
+func (p *Plugin) canEditComment(c *gin.Context) {
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
 
 	var o Comment

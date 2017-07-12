@@ -1,17 +1,17 @@
 package erp
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/ikeikeikeike/go-sitemap-generator/stm"
 	"github.com/jinzhu/gorm"
-	"github.com/kapmahc/fly/engines/auth"
-	"github.com/kapmahc/fly/web"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/web"
 	"github.com/urfave/cli"
 	"golang.org/x/tools/blog/atom"
-	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
-// Engine engine
-type Engine struct {
+// Plugin plugin
+type Plugin struct {
 	Db   *gorm.DB  `inject:""`
 	I18n *web.I18n `inject:""`
 	Jwt  *auth.Jwt `inject:""`
@@ -19,27 +19,27 @@ type Engine struct {
 }
 
 // RegisterWorker register worker
-func (p *Engine) RegisterWorker() {
+func (p *Plugin) RegisterWorker() {
 
 }
 
 // Shell shell commands
-func (p *Engine) Shell() []cli.Command {
+func (p *Plugin) Shell() []cli.Command {
 	return []cli.Command{}
 }
 
 // Atom rss.atom
-func (p *Engine) Atom(lang string) ([]*atom.Entry, error) {
+func (p *Plugin) Atom(lang string) ([]*atom.Entry, error) {
 	return []*atom.Entry{}, nil
 }
 
 // Sitemap sitemap.xml.gz
-func (p *Engine) Sitemap() ([]stm.URL, error) {
+func (p *Plugin) Sitemap() ([]stm.URL, error) {
 	return []stm.URL{}, nil
 }
 
 // Dashboard dashboard
-func (p *Engine) Dashboard(c *gin.Context) *web.Dropdown {
+func (p *Plugin) Dashboard(c *gin.Context) *web.Dropdown {
 	if admin, ok := c.Get(auth.IsAdmin); !ok || !admin.(bool) {
 		return nil
 	}
@@ -61,5 +61,5 @@ func (p *Engine) Dashboard(c *gin.Context) *web.Dropdown {
 }
 
 func init() {
-	web.Register(&Engine{})
+	web.Register(&Plugin{})
 }

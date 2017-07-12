@@ -1,11 +1,11 @@
 package vpn
 
 import (
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/web"
 )
 
-func (p *Engine) indexLogs(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexLogs(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.vpn.logs.index.title")
 	tpl := "ops-vpn-logs-index"
 	var total int64

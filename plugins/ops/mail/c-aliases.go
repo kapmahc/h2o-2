@@ -3,10 +3,10 @@ package mail
 import (
 	"net/http"
 
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
 )
 
-func (p *Engine) indexAliases(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexAliases(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.mail.aliases.index.title")
 	tpl := "ops-mail-aliases-index"
 	var items []Alias
@@ -37,7 +37,7 @@ type fmAlias struct {
 	Destination string `form:"destination" binding:"required,max=255"`
 }
 
-func (p *Engine) createAlias(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createAlias(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.new")
 	tpl := "ops-mail-aliases-new"
 
@@ -70,7 +70,7 @@ func (p *Engine) createAlias(c *gin.Context, lang string, data gin.H) (string, e
 	return tpl, nil
 }
 
-func (p *Engine) updateAlias(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateAlias(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.edit")
 	tpl := "ops-mail-aliases-edit"
 	id := c.Param("id")
@@ -113,7 +113,7 @@ func (p *Engine) updateAlias(c *gin.Context, lang string, data gin.H) (string, e
 	return tpl, nil
 }
 
-func (p *Engine) destroyAlias(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyAlias(c *gin.Context) (interface{}, error) {
 	err := p.Db.
 		Where("id = ?", c.Param("id")).
 		Delete(Alias{}).Error

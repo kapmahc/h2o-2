@@ -11,12 +11,12 @@ import (
 	"path"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"github.com/kapmahc/epub"
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/kapmahc/h2o/web"
 )
 
-func (p *Engine) indexBooks(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexBooks(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "reading.books.index.title")
 	tpl := "reading-books-index"
 	var total int64
@@ -38,7 +38,7 @@ func (p *Engine) indexBooks(c *gin.Context, lang string, data gin.H) (string, er
 	return tpl, nil
 }
 
-func (p *Engine) showBook(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) showBook(c *gin.Context, lang string, data gin.H) (string, error) {
 	id := c.Param("id")
 	tpl := "reading-books-show"
 	var buf bytes.Buffer
@@ -63,7 +63,7 @@ func (p *Engine) showBook(c *gin.Context, lang string, data gin.H) (string, erro
 	return tpl, nil
 }
 
-func (p *Engine) showPage(c *gin.Context) {
+func (p *Plugin) showPage(c *gin.Context) {
 	err := p.readBookPage(c.Writer, c.Param("id"), c.Param("href")[1:])
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
@@ -72,7 +72,7 @@ func (p *Engine) showPage(c *gin.Context) {
 
 // -----------------------
 
-func (p *Engine) readBookPage(w http.ResponseWriter, id string, name string) error {
+func (p *Plugin) readBookPage(w http.ResponseWriter, id string, name string) error {
 	_, bk, err := p.readBook(id)
 	if err != nil {
 		return err
@@ -100,7 +100,7 @@ func (p *Engine) readBookPage(w http.ResponseWriter, id string, name string) err
 	return errors.New("not found")
 }
 
-func (p *Engine) writePoints(wrt io.Writer, href string, points []epub.NavPoint) {
+func (p *Plugin) writePoints(wrt io.Writer, href string, points []epub.NavPoint) {
 	wrt.Write([]byte("<ol>"))
 	for _, it := range points {
 		wrt.Write([]byte("<li>"))
@@ -117,7 +117,7 @@ func (p *Engine) writePoints(wrt io.Writer, href string, points []epub.NavPoint)
 	wrt.Write([]byte("</ol>"))
 }
 
-func (p *Engine) readBook(id string) (*Book, *epub.Book, error) {
+func (p *Plugin) readBook(id string) (*Book, *epub.Book, error) {
 	var book Book
 	if err := p.Db.
 		Where("id = ?", id).First(&book).Error; err != nil {

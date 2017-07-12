@@ -3,10 +3,10 @@ package mail
 import (
 	"net/http"
 
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
 )
 
-func (p *Engine) indexDomains(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexDomains(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.mail.domains.index.title")
 	tpl := "ops-mail-domains-index"
 	var items []Domain
@@ -21,7 +21,7 @@ type fmDomain struct {
 	Name string `form:"name" binding:"required,max=255"`
 }
 
-func (p *Engine) createDomain(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createDomain(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.new")
 	tpl := "ops-mail-domains-new"
 	if c.Request.Method == http.MethodPost {
@@ -41,7 +41,7 @@ func (p *Engine) createDomain(c *gin.Context, lang string, data gin.H) (string, 
 	return tpl, nil
 }
 
-func (p *Engine) updateDomain(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateDomain(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.edit")
 	tpl := "ops-mail-domains-edit"
 	id := c.Param("id")
@@ -72,7 +72,7 @@ func (p *Engine) updateDomain(c *gin.Context, lang string, data gin.H) (string, 
 	return tpl, nil
 }
 
-func (p *Engine) destroyDomain(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyDomain(c *gin.Context) (interface{}, error) {
 	err := p.Db.
 		Where("id = ?", c.Param("id")).
 		Delete(Domain{}).Error

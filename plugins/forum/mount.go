@@ -1,13 +1,13 @@
 package forum
 
 import (
-	"github.com/kapmahc/fly/engines/auth"
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/web"
 )
 
 // Mount web mount-points
-func (p *Engine) Mount(rt *gin.Engine) {
+func (p *Plugin) Mount(rt *gin.Engine) {
 	ag := rt.Group("/forum/admin", p.Jwt.MustAdminMiddleware)
 	ag.GET("/tags", auth.HTML(p.indexAdminTags))
 	ag.GET("/tags/new", auth.HTML(p.createTag))

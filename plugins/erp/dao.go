@@ -2,7 +2,7 @@ package erp
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/kapmahc/fly/engines/shop"
+	"github.com/kapmahc/h2o/plugins/shop"
 )
 
 // Dao dao

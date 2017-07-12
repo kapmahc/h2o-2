@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"time"
 
-	"github.com/kapmahc/fly/web"
+	"github.com/kapmahc/h2o/web"
 )
 
 // http://chagridsada.blogspot.com/2011/01/openvpn-system-based-on-userpass.html

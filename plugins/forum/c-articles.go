@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/kapmahc/fly/engines/auth"
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/web"
 )
 
-func (p *Engine) myArticles(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) myArticles(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "forum.articles.my.title")
 	tpl := "forum-articles-my"
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
@@ -26,7 +26,7 @@ func (p *Engine) myArticles(c *gin.Context, lang string, data gin.H) (string, er
 	return tpl, nil
 }
 
-func (p *Engine) indexArticles(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexArticles(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "forum.articles.index.title")
 	tpl := "forum-articles-index"
 
@@ -59,7 +59,7 @@ type fmArticle struct {
 	Tags    []string `form:"tags"`
 }
 
-func (p *Engine) createArticle(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createArticle(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "forum.articles.new.title")
 	tpl := "forum-articles-new"
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
@@ -105,7 +105,7 @@ func (p *Engine) createArticle(c *gin.Context, lang string, data gin.H) (string,
 	return tpl, nil
 }
 
-func (p *Engine) showArticle(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) showArticle(c *gin.Context, lang string, data gin.H) (string, error) {
 
 	tpl := "forum-articles-show"
 	var a Article
@@ -123,7 +123,7 @@ func (p *Engine) showArticle(c *gin.Context, lang string, data gin.H) (string, e
 	return tpl, nil
 }
 
-func (p *Engine) updateArticle(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateArticle(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.edit")
 	tpl := "forum-articles-edit"
 	a := c.MustGet("article").(*Article)
@@ -178,7 +178,7 @@ func (p *Engine) updateArticle(c *gin.Context, lang string, data gin.H) (string,
 	return tpl, nil
 }
 
-func (p *Engine) destroyArticle(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyArticle(c *gin.Context) (interface{}, error) {
 	a := c.MustGet("article").(*Article)
 	if err := p.Db.Model(a).Association("Tags").Clear().Error; err != nil {
 		return nil, err
@@ -187,7 +187,7 @@ func (p *Engine) destroyArticle(c *gin.Context) (interface{}, error) {
 	return gin.H{}, err
 }
 
-func (p *Engine) canEditArticle(c *gin.Context) {
+func (p *Plugin) canEditArticle(c *gin.Context) {
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
 
 	var a Article

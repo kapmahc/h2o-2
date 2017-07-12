@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/kapmahc/fly/engines/auth"
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/web"
 )
 
-func (p *Engine) myNotes(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) myNotes(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "reading.notes.my.title")
 	tpl := "reading-notes-my"
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
@@ -26,7 +26,7 @@ func (p *Engine) myNotes(c *gin.Context, lang string, data gin.H) (string, error
 	return tpl, nil
 }
 
-func (p *Engine) indexNotes(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexNotes(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "reading.notes.index.title")
 	tpl := "reading-notes-index"
 
@@ -57,7 +57,7 @@ type fmNoteNew struct {
 	BookID uint   `form:"bookId"`
 }
 
-func (p *Engine) createNote(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createNote(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.new")
 	tpl := "reading-notes-new"
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
@@ -87,7 +87,7 @@ type fmNoteEdit struct {
 	Body string `form:"body" binding:"required,max=2000"`
 }
 
-func (p *Engine) updateNote(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateNote(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.edit")
 	tpl := "reading-notes-edit"
 
@@ -116,13 +116,13 @@ func (p *Engine) updateNote(c *gin.Context, lang string, data gin.H) (string, er
 	return tpl, nil
 }
 
-func (p *Engine) destroyNote(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyNote(c *gin.Context) (interface{}, error) {
 	n := c.MustGet("note").(*Note)
 	err := p.Db.Delete(n).Error
 	return gin.H{}, err
 }
 
-func (p *Engine) canEditNote(c *gin.Context) {
+func (p *Plugin) canEditNote(c *gin.Context) {
 	user := c.MustGet(auth.CurrentUser).(*auth.User)
 
 	var n Note

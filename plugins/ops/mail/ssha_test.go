@@ -3,7 +3,7 @@ package mail_test
 import (
 	"testing"
 
-	"github.com/kapmahc/fly/engines/ops/mail"
+	"github.com/kapmahc/h2o/plugins/ops/mail"
 )
 
 func TestPassword(t *testing.T) {

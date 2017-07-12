@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/kapmahc/fly/web"
-	gin "gopkg.in/gin-gonic/gin.v1"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/web"
 )
 
-func (p *Engine) indexUsers(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) indexUsers(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.vpn.users.index.title")
 	tpl := "ops-vpn-users-index"
 	var items []User
@@ -30,7 +30,7 @@ type fmUserNew struct {
 	ShutDown             string `form:"shutDown"`
 }
 
-func (p *Engine) createUser(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createUser(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.new")
 	tpl := "ops-vpn-users-new"
 
@@ -79,7 +79,7 @@ type fmUserEdit struct {
 	ShutDown string `form:"shutDown"`
 }
 
-func (p *Engine) updateUser(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateUser(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.vpn.users.edit.title")
 	tpl := "ops-vpn-users-edit"
 	id := c.Param("id")
@@ -128,7 +128,7 @@ type fmUserResetPassword struct {
 	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=Password"`
 }
 
-func (p *Engine) resetUserPassword(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) resetUserPassword(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.vpn.users.reset-password.title")
 	tpl := "ops-vpn-users-reset-password"
 	id := c.Param("id")
@@ -168,7 +168,7 @@ type fmUserChangePassword struct {
 	PasswordConfirmation string `form:"passwordConfirmation" binding:"eqfield=NewPassword"`
 }
 
-func (p *Engine) changeUserPassword(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) changeUserPassword(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.vpn.users.change-password.title")
 	tpl := "ops-vpn-users-change-password"
 
@@ -200,7 +200,7 @@ func (p *Engine) changeUserPassword(c *gin.Context, lang string, data gin.H) (st
 	return tpl, nil
 }
 
-func (p *Engine) destroyUser(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyUser(c *gin.Context) (interface{}, error) {
 	err := p.Db.
 		Where("id = ?", c.Param("id")).
 		Delete(User{}).Error

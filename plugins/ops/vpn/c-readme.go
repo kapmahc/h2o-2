@@ -1,13 +1,13 @@
 package vpn
 
 import (
-	"github.com/kapmahc/fly/engines/auth"
-	"github.com/kapmahc/fly/web"
+	"github.com/gin-gonic/gin"
+	"github.com/kapmahc/h2o/plugins/auth"
+	"github.com/kapmahc/h2o/web"
 	"github.com/spf13/viper"
-	gin "gopkg.in/gin-gonic/gin.v1"
 )
 
-func (p *Engine) getReadme(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) getReadme(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "ops.vpn.readme.title")
 	tpl := "ops-vpn-readme"
 	data["user"] = c.MustGet(auth.CurrentUser)
