@@ -13,6 +13,7 @@ import (
 	_ "github.com/kapmahc/h2o/plugins/site"
 	_ "github.com/kapmahc/h2o/plugins/suvery"
 	"github.com/kapmahc/h2o/web"
+	_ "github.com/lib/pq"
 )
 
 func main() {

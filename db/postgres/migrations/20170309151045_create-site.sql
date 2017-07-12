@@ -34,20 +34,8 @@ CREATE TABLE cards (
 );
 CREATE INDEX idx_cards_loc ON cards (loc);
 
-CREATE TABLE votes (
-  id BIGSERIAL PRIMARY KEY,
-  resource_type VARCHAR(255) NOT NULL,
-  resource_id BIGINT NOT NULL,
-  points INT NOT NULL,
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
-CREATE INDEX idx_votes_resource_type ON votes (resource_type);
-CREATE UNIQUE INDEX idx_votes_resource ON votes (resource_type, resource_id);
-
 -- +goose Down
 -- SQL section 'Down' is executed when this migration is rolled back
-DROP TABLE votes;
 DROP TABLE cards;
 DROP TABLE links;
 DROP TABLE leave_words;

@@ -104,18 +104,9 @@ CREATE INDEX idx_attachments_title
 CREATE INDEX idx_attachments_media_type
   ON attachments (media_type);
 
-CREATE TABLE resources (
-  type          VARCHAR(255)                NOT NULL,
-  id            BIGINT                      NOT NULL,
-  attachment_id BIGINT                      REFERENCES attachments,
-  created_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  PRIMARY KEY (type, id, attachment_id)
-);
-CREATE INDEX idx_resources_type on resources(type);
 
 -- +goose Down
 -- SQL section 'Down' is executed when this migration is rolled back
-DROP TABLE resources;
 DROP TABLE attachments;
 DROP TABLE votes;
 DROP TABLE policies;
