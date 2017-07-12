@@ -15,3 +15,7 @@
 # test
 /tmp
 /config.toml
+
+# build
+/build
+/dist.tar.bz2
