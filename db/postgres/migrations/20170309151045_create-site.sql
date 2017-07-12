@@ -8,13 +8,6 @@ CREATE TABLE leave_words (
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now()
 );
 
-CREATE TABLE notices (
-  id         BIGSERIAL PRIMARY KEY,
-  body       TEXT                        NOT NULL,
-  type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
-  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
-  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
-);
 
 CREATE TABLE links (
   id BIGSERIAL PRIMARY KEY,
@@ -27,7 +20,7 @@ CREATE TABLE links (
 );
 CREATE INDEX idx_links_loc ON links (loc);
 
-CREATE TABLE pages (
+CREATE TABLE cards (
   id BIGSERIAL PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
   summary VARCHAR(2048) NOT NULL,
@@ -39,11 +32,22 @@ CREATE TABLE pages (
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
-CREATE INDEX idx_pages_loc ON pages (loc);
+CREATE INDEX idx_cards_loc ON cards (loc);
+
+CREATE TABLE votes (
+  id BIGSERIAL PRIMARY KEY,
+  resource_type VARCHAR(255) NOT NULL,
+  resource_id BIGINT NOT NULL,
+  points INT NOT NULL,
+  created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
+  updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
+CREATE INDEX idx_votes_resource_type ON votes (resource_type);
+CREATE UNIQUE INDEX idx_votes_resource ON votes (resource_type, resource_id);
 
 -- +goose Down
 -- SQL section 'Down' is executed when this migration is rolled back
-DROP TABLE pages;
+DROP TABLE votes;
+DROP TABLE cards;
 DROP TABLE links;
-DROP TABLE notices;
 DROP TABLE leave_words;
