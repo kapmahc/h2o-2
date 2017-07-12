@@ -1,22 +1,6 @@
 package site
 
-import (
-	"time"
-
-	"github.com/kapmahc/h2o/web"
-)
-
-// Notice notice
-type Notice struct {
-	web.Model
-	Body string `json:"body"`
-	Type string `json:"type"`
-}
-
-// TableName table name
-func (Notice) TableName() string {
-	return "notices"
-}
+import "time"
 
 // LeaveWord leave-word
 type LeaveWord struct {

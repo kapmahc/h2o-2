@@ -29,12 +29,12 @@ func (p *Plugin) Mount(rt *gin.Engine) {
 	ag.POST("/links/edit/:id", auth.HTML(p.updateAdminLink))
 	ag.DELETE("/links/:id", web.JSON(p.destroyAdminLink))
 
-	ag.GET("/pages", auth.HTML(p.indexAdminPages))
-	ag.GET("/pages/new", auth.HTML(p.createAdminPage))
-	ag.POST("/pages/new", auth.HTML(p.createAdminPage))
-	ag.GET("/pages/edit/:id", auth.HTML(p.updateAdminPage))
-	ag.POST("/pages/edit/:id", auth.HTML(p.updateAdminPage))
-	ag.DELETE("/pages/:id", web.JSON(p.destroyAdminPage))
+	ag.GET("/cards", auth.HTML(p.indexAdminCards))
+	ag.GET("/cards/new", auth.HTML(p.createAdminCard))
+	ag.POST("/cards/new", auth.HTML(p.createAdminCard))
+	ag.GET("/cards/edit/:id", auth.HTML(p.updateAdminCard))
+	ag.POST("/cards/edit/:id", auth.HTML(p.updateAdminCard))
+	ag.DELETE("/cards/:id", web.JSON(p.destroyAdminCard))
 
 	asg := ag.Group("/site")
 	asg.GET("/status", auth.HTML(p.getAdminSiteStatus))

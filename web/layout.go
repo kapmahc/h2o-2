@@ -25,8 +25,8 @@ func (Link) TableName() string {
 	return "links"
 }
 
-// Page page
-type Page struct {
+// Card card
+type Card struct {
 	Model
 	Href      string
 	Logo      string
@@ -38,8 +38,8 @@ type Page struct {
 }
 
 // TableName table name
-func (Page) TableName() string {
-	return "pages"
+func (Card) TableName() string {
+	return "cards"
 }
 
 // Dropdown dropdown

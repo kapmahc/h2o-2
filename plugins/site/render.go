@@ -15,46 +15,11 @@ import (
 )
 
 func (p *Plugin) openRender(theme string) (*template.Template, error) {
-	assets := make(map[string]string)
-	if err := filepath.Walk(
-		path.Join("themes", theme, "public", "assets"),
-		func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-			if info.IsDir() {
-				return nil
-			}
-			name := info.Name()
-
-			switch filepath.Ext(name) {
-			case ".css", ".js", ".png", ".svg":
-				ss := strings.Split(name, ".")
-				if len(ss) == 3 {
-					assets[fmt.Sprintf("%s.%s", ss[0], ss[2])] = name
-				}
-			}
-			return nil
-		},
-	); err != nil {
-		return nil, err
-	}
-	for k, v := range assets {
-		log.Debugf("assets %-16s => %s", k, v)
-	}
-
-	// ----------------
 
 	funcs := template.FuncMap{
 		"t": p.I18n.T,
 		"tn": func(v interface{}) string {
 			return reflect.TypeOf(v).String()
-		},
-		"asset": func(k string) string {
-			if web.IsProduction() {
-				return fmt.Sprintf("/assets/%s", assets[k])
-			}
-			return fmt.Sprintf("/public/assets/%s", assets[k])
 		},
 		"even": func(i interface{}) bool {
 			if i != nil {
@@ -113,8 +78,8 @@ func (p *Plugin) openRender(theme string) (*template.Template, error) {
 			}
 			return items
 		},
-		"pages": func(loc string) []web.Page {
-			var items []web.Page
+		"cards": func(loc string) []web.Card {
+			var items []web.Card
 			if err := p.Db.Where("loc = ?", loc).Order("sort_order DESC").Find(&items).Error; err != nil {
 				log.Error(err)
 			}

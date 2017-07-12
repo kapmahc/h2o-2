@@ -3,6 +3,7 @@ package web
 import (
 	"fmt"
 	"os"
+	"path"
 	"sort"
 
 	"github.com/spf13/viper"
@@ -107,5 +108,10 @@ func init() {
 		language.AmericanEnglish.String(),
 		language.SimplifiedChinese.String(),
 		language.TraditionalChinese.String(),
+	})
+
+	viper.SetDefault("uploader", map[string]string{
+		"path":     path.Join("public", "attachments"),
+		"endpoint": "/public/attachment",
 	})
 }

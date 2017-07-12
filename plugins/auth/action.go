@@ -2,7 +2,6 @@ package auth
 
 import (
 	"crypto/aes"
-	"path"
 
 	"github.com/SermoDigital/jose/crypto"
 	"github.com/facebookgo/inject"
@@ -52,18 +51,10 @@ func Action(fn func(*cli.Context, *inject.Graph) error) cli.ActionFunc {
 		}
 		// --------------------
 		var up web.Uploader
-		theme := viper.GetString("server.theme")
-		if web.IsProduction() {
-			up, err = web.NewFileSystemUploader(
-				path.Join("themes", theme, "public", "attachments"),
-				"/attachments",
-			)
-		} else {
-			up, err = web.NewFileSystemUploader(
-				path.Join("themes", theme, "public", "attachments"),
-				"/public/attachments",
-			)
-		}
+		up, err = web.NewFileSystemUploader(
+			viper.GetString("uploader.path"),
+			viper.GetString("uploader.endpoint"),
+		)
 
 		if err != nil {
 			return err

@@ -8,22 +8,22 @@ import (
 )
 
 var (
-	pageLocs = []interface{}{"carousel", "circle", "square"}
+	cardLocs = []interface{}{"carousel", "circle", "square"}
 	defLogo  = "data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw=="
 )
 
-func (p *Plugin) indexAdminPages(c *gin.Context, lang string, data gin.H) (string, error) {
-	data["title"] = p.I18n.T(lang, "site.admin.pages.index.title")
-	tpl := "site-admin-pages-index"
-	var pages []web.Page
-	if err := p.Db.Order("loc ASC, sort_order DESC").Find(&pages).Error; err != nil {
+func (p *Plugin) indexAdminCards(c *gin.Context, lang string, data gin.H) (string, error) {
+	data["title"] = p.I18n.T(lang, "site.admin.cards.index.title")
+	tpl := "site-admin-cards-index"
+	var cards []web.Card
+	if err := p.Db.Order("loc ASC, sort_order DESC").Find(&cards).Error; err != nil {
 		return tpl, err
 	}
-	data["items"] = pages
+	data["items"] = cards
 	return tpl, nil
 }
 
-type fmPage struct {
+type fmCard struct {
 	Title     string `form:"title" binding:"required,max=255"`
 	Href      string `form:"href" binding:"required,max=255"`
 	Loc       string `form:"loc" binding:"required,max=16"`
@@ -33,18 +33,18 @@ type fmPage struct {
 	SortOrder int    `form:"sortOrder"`
 }
 
-func (p *Plugin) createAdminPage(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) createAdminCard(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.new")
-	data["locs"] = pageLocs
+	data["locs"] = cardLocs
 	data["sortOrders"] = sortOrders
-	tpl := "site-admin-pages-new"
+	tpl := "site-admin-cards-new"
 	if c.Request.Method == http.MethodPost {
-		var fm fmPage
+		var fm fmCard
 		if err := c.Bind(&fm); err != nil {
 			return tpl, err
 		}
 
-		if err := p.Db.Create(&web.Page{
+		if err := p.Db.Create(&web.Card{
 			Loc:       fm.Loc,
 			Title:     fm.Title,
 			Summary:   fm.Summary,
@@ -55,31 +55,31 @@ func (p *Plugin) createAdminPage(c *gin.Context, lang string, data gin.H) (strin
 		}).Error; err != nil {
 			return tpl, err
 		}
-		c.Redirect(http.StatusFound, "/admin/pages")
+		c.Redirect(http.StatusFound, "/admin/cards")
 		return "", nil
 	}
 	return tpl, nil
 }
 
-func (p *Plugin) updateAdminPage(c *gin.Context, lang string, data gin.H) (string, error) {
+func (p *Plugin) updateAdminCard(c *gin.Context, lang string, data gin.H) (string, error) {
 	data["title"] = p.I18n.T(lang, "buttons.edit")
-	data["locs"] = pageLocs
+	data["locs"] = cardLocs
 	data["sortOrders"] = sortOrders
-	tpl := "site-admin-pages-edit"
+	tpl := "site-admin-cards-edit"
 	id := c.Param("id")
 
-	var item web.Page
+	var item web.Card
 	if err := p.Db.Where("id = ?", id).First(&item).Error; err != nil {
 		return tpl, err
 	}
 	data["item"] = item
 	if c.Request.Method == http.MethodPost {
-		var fm fmPage
+		var fm fmCard
 		if err := c.Bind(&fm); err != nil {
 			return tpl, err
 		}
 
-		if err := p.Db.Model(&web.Page{}).
+		if err := p.Db.Model(&web.Card{}).
 			Where("id = ?", id).
 			Updates(map[string]interface{}{
 				"loc":        fm.Loc,
@@ -92,16 +92,16 @@ func (p *Plugin) updateAdminPage(c *gin.Context, lang string, data gin.H) (strin
 			}).Error; err != nil {
 			return tpl, err
 		}
-		c.Redirect(http.StatusFound, "/admin/pages")
+		c.Redirect(http.StatusFound, "/admin/cards")
 		return "", nil
 	}
 
 	return tpl, nil
 }
 
-func (p *Plugin) destroyAdminPage(c *gin.Context) (interface{}, error) {
+func (p *Plugin) destroyAdminCard(c *gin.Context) (interface{}, error) {
 	err := p.Db.
 		Where("id = ?", c.Param("id")).
-		Delete(web.Page{}).Error
+		Delete(web.Card{}).Error
 	return gin.H{}, err
 }

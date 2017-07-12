@@ -47,7 +47,7 @@ func (p *Plugin) Shell() []cli.Command {
 			Name:  "seo",
 			Usage: "generate sitemap.xml.gz/rss.atom/robots.txt ...etc",
 			Action: auth.Action(func(*cli.Context, *inject.Graph) error {
-				root := path.Join("themes", viper.GetString("server.theme"), "public")
+				root := "public"
 				os.MkdirAll(root, 0755)
 				if err := p.writeSitemap(root); err != nil {
 					return err
@@ -294,7 +294,7 @@ func (p *Plugin) generateConfig(c *cli.Context) error {
 }
 
 func (p *Plugin) generateNginxConf(*cli.Context) error {
-	t, err := template.New("").Parse(nginxConf)
+	t, err := template.ParseFiles(path.Join("templates", "nginx.conf"))
 	if err != nil {
 		return err
 	}
@@ -324,7 +324,7 @@ func (p *Plugin) generateNginxConf(*cli.Context) error {
 	}{
 		Name:    name,
 		Port:    viper.GetInt("server.port"),
-		Root:    path.Join(pwd, "themes", viper.GetString("server.theme"), "public"),
+		Root:    path.Join(pwd, "public"),
 		Version: "v1",
 		Ssl:     viper.GetBool("server.ssl"),
 	})
@@ -603,10 +603,8 @@ func (p *Plugin) runServer(*cli.Context, *inject.Graph) error {
 	rt := gin.Default()
 	// --------------
 	theme := viper.GetString("server.theme")
-	if !web.IsProduction() {
-		// using nginx for production
-		rt.Static("/public", path.Join("themes", theme, "public"))
-	}
+	rt.Static("/assets", path.Join("themes", theme, "assets"))
+	rt.Static("/3rd", path.Join("node_modules"))
 
 	tpl, err := p.openRender(theme)
 	if err != nil {
@@ -752,7 +750,7 @@ func (p *Plugin) writeRssAtom(root string, lang string) error {
 }
 
 func (p *Plugin) writeRobotsTxt(root string) error {
-	t, err := template.New("").Parse(robotsTxt)
+	t, err := template.ParseFiles("templates", "robots.txt")
 	if err != nil {
 		return err
 	}

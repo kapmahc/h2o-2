@@ -1,14 +1,18 @@
 {{define "metas"}}
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="{{t .l "site.description"}}">
 <meta name="keywords" content="{{t .l "site.keywords"}}">
 <meta name="author" content="{{t .l "site.author.name"}}<{{t .l "site.author.email"}}>">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="csrf-token" content="{{.csrf}}">
-<link rel="icon" type="image/png" href="{{asset "favicon.png"}}">
-<link rel="stylesheet" href="{{asset "main.css"}}">
 <title>{{.title}}|{{t .l "site.subTitle"}}|{{t .l "site.title"}}</title>
-<script src="{{asset "manifest.js"}}"></script>
-<script src="{{asset "vendor.js"}}"></script>
-<script src="{{asset "main.js"}}"></script>
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="stylesheet" href="/assets/main.css">
+<script src="/3rd/jquery/dist/jquery.min.js"></script>
+<script src="/3rd/tether/dist/js/tether.min.js"></script>
+<script src="/3rd/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/3rd/dropzone/dist/dropzone.js"></script>
+<script src="/3rd/clipboard/dist/clipboard.min.js"></script>
+<script src="/3rd/marked/lib/marked.js"></script>
+<script src="/assets/main.js"></script>
 {{end}}
