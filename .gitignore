@@ -1,0 +1,17 @@
+
+# vim
+.*.swp
+.*.un~
+
+# go
+/h2o.tar.bz2
+/vendor/*/
+
+
+# node
+/node_modules
+/package-lock.json
+
+# test
+/tmp
+/config.toml
