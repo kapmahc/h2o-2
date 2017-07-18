@@ -4,3 +4,7 @@ version = "0.1.0"
 authors = ["Jeremy Zheng <jitang.zheng@gmail.com>"]
 
 [dependencies]
+redis = "0.8.0"
+postgres = "0.14.2"
+docopt = "0.8.1"
+mustache = "0.8.0"
