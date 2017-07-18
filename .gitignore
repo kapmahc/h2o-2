@@ -1,0 +1,7 @@
+# rust
+target/
+**/*.rs.bk
+
+# vim
+.*.swp
+.*.un~
