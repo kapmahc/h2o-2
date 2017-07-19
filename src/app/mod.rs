@@ -3,12 +3,9 @@ pub mod generate;
 pub mod server;
 pub mod worker;
 
-extern crate serde;
-extern crate docopt;
+use docopt;
 
-use self::docopt::Docopt;
-
-const USAGE: &'static str = "
+docopt!(Args derive Debug, "
 H2O - A complete open source e-commerce solution by rust language.
 
 Usage:
@@ -25,39 +22,13 @@ Options:
   --worker      Start with a background-job worker.
   --name=<wn>   Background-job worker's name, default is hostname.
   --threads=<tn>  Threads in worker [default: 2].
-";
-
-#[derive(Debug, Deserialize)]
-struct Args {
-    cmd_generate: bool,
-    cmd_nginx: bool,
-    cmd_config: bool,
-    cmd_migration: bool,
-    cmd_locale: bool,
-    cmd_ssl: bool,
-
-    cmd_db: bool,
-    cmd_create: bool,
-    cmd_connect: bool,
-    cmd_migrate: bool,
-    cmd_rollback: bool,
-    cmd_drop: bool,
-    cmd_status: bool,
-
-    cmd_server: bool,
-    flag_worker: bool,
-
-    cmd_worker: bool,
-    flag_name: Vec<String>,
-    flag_threads: isize,
-
-    flag_version: bool,
-    flag_v: bool,
-}
+");
 
 pub fn run() {
-    let args: Args = Docopt::new(USAGE)
-        .and_then(|d| d.deserialize())
-        .unwrap_or_else(|e| e.exit());
+    let args: Args = Args::docopt().deserialize().unwrap_or_else(|e| e.exit());
+    if args.flag_v || args.flag_version {
+        println!("{}", super::env::VERSION);
+        return;
+    }
     println!("{:?}", args);
 }

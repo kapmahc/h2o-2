@@ -2,6 +2,14 @@
 
 A complete open source e-commerce solution by rust language.
 
+## Install rust
+
+```bash
+sudo pacman -S rustup
+rustup default nightly
+rustup update && cargo update # upgrade
+```
+
 ## Build
 
 ```bash
@@ -20,3 +28,5 @@ cargo build --release
 
 - [rust book](https://doc.rust-lang.org/book/)
 - [packages for rust](https://crates.io/)
+- [rocket.rs](https://rocket.rs/guide/)
+- [serde](https://serde.rs/)
