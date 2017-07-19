@@ -27,8 +27,11 @@ Options:
 pub fn run() {
     let args: Args = Args::docopt().deserialize().unwrap_or_else(|e| e.exit());
     if args.flag_v || args.flag_version {
-        println!("{}", super::env::VERSION);
+        println!("{}", super::env::version());
         return;
     }
     println!("{:?}", args);
+    // println!("{}", args.to_string());
+    // args.help(true)
+
 }

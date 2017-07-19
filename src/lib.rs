@@ -1,5 +1,6 @@
 #![feature(plugin)]
 #![plugin(docopt_macros)]
+#![plugin(rocket_codegen)]
 
 pub mod app;
 pub mod env;
@@ -8,3 +9,4 @@ pub mod env;
 extern crate serde_derive;
 extern crate serde;
 extern crate docopt;
+extern crate rocket;

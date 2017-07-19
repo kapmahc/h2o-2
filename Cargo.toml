@@ -2,6 +2,10 @@
 name = "h2o"
 version = "0.1.0"
 authors = ["Jeremy Zheng <jitang.zheng@gmail.com>"]
+description = "A complete open source e-commerce solution by rust language."
+homepage = "https://github.com/kapmahc/h2o"
+readme = "README.md"
+license = "MIT"
 
 [dependencies]
 rocket = "0.3.0"
