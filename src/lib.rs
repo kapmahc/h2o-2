@@ -10,3 +10,5 @@ extern crate serde_derive;
 extern crate serde;
 extern crate docopt;
 extern crate rocket;
+extern crate mustache;
+extern crate rustc_serialize;

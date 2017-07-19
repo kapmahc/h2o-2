@@ -30,6 +30,24 @@ pub fn run() {
         println!("{}", super::env::version());
         return;
     }
+    if args.cmd_generate {
+        if args.cmd_nginx {
+            generate::nginx();
+            return;
+        }
+        if args.cmd_locale {
+            generate::locale();
+            return;
+        }
+        if args.cmd_migration {
+            generate::migration();
+            return;
+        }
+        if args.cmd_ssl {
+            generate::ssl();
+            return;
+        }
+    }
     println!("{:?}", args);
     // println!("{}", args.to_string());
     // args.help(true)
