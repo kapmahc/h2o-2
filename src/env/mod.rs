@@ -6,6 +6,8 @@ use std::num;
 use std::error;
 use std::fmt;
 
+use time;
+
 pub fn version() -> String {
     format!(
         "{}/{}\n{}\n{}\n{}",
@@ -21,6 +23,7 @@ pub fn version() -> String {
 pub enum Error {
     Io(io::Error),
     Parse(num::ParseIntError),
+    ParseTime(time::ParseError),
 }
 
 impl fmt::Display for Error {
@@ -28,6 +31,7 @@ impl fmt::Display for Error {
         match *self {
             Error::Io(ref err) => write!(f, "IO error: {}", err),
             Error::Parse(ref err) => write!(f, "Parse error: {}", err),
+            Error::ParseTime(ref err) => write!(f, "Parse time error: {}", err),
         }
     }
 }
@@ -37,6 +41,7 @@ impl error::Error for Error {
         match *self {
             Error::Io(ref err) => err.description(),
             Error::Parse(ref err) => err.description(),
+            Error::ParseTime(ref err) => err.description(),
         }
     }
 
@@ -44,6 +49,7 @@ impl error::Error for Error {
         match *self {
             Error::Io(ref err) => Some(err),
             Error::Parse(ref err) => Some(err),
+            Error::ParseTime(ref err) => Some(err),
         }
     }
 }

@@ -5,6 +5,7 @@
 pub mod app;
 pub mod env;
 
+extern crate time;
 #[macro_use]
 extern crate log;
 #[macro_use]
