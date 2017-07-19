@@ -2,12 +2,12 @@
 use super::super::env;
 
 pub fn create() -> Result<bool, env::errors::Error> {
-    try!(try!(env::db::Config::new()).create(""));
+    try!(try!(env::db::Config::new()).create());
     Ok(true)
 }
 
 pub fn drop() -> Result<bool, env::errors::Error> {
-    try!(try!(env::db::Config::new()).drop(""));
+    try!(try!(env::db::Config::new()).drop());
     Ok(true)
 }
 

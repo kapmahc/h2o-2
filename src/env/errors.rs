@@ -7,7 +7,7 @@ use postgres;
 #[derive(Debug)]
 pub enum Error {
     Io(io::Error),
-    Parse(num::ParseIntError),
+    ParseInt(num::ParseIntError),
     EnvVar(env::VarError),
     ParseTime(time::ParseError),
     Template(mustache::Error),
@@ -19,7 +19,7 @@ impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Error::Io(ref err) => write!(f, "IO error: {}", err),
-            Error::Parse(ref err) => write!(f, "Parse error: {}", err),
+            Error::ParseInt(ref err) => write!(f, "Parse error: {}", err),
             Error::ParseTime(ref err) => write!(f, "Parse time error: {}", err),
             Error::Template(ref err) => write!(f, "Template error: {}", err),
             Error::EnvVar(ref err) => write!(f, "ENV var error: {}", err),
@@ -33,7 +33,7 @@ impl error::Error for Error {
     fn description(&self) -> &str {
         match *self {
             Error::Io(ref err) => err.description(),
-            Error::Parse(ref err) => err.description(),
+            Error::ParseInt(ref err) => err.description(),
             Error::ParseTime(ref err) => err.description(),
             Error::Template(ref err) => err.description(),
             Error::EnvVar(ref err) => err.description(),
@@ -45,7 +45,7 @@ impl error::Error for Error {
     fn cause(&self) -> Option<&error::Error> {
         match *self {
             Error::Io(ref err) => Some(err),
-            Error::Parse(ref err) => Some(err),
+            Error::ParseInt(ref err) => Some(err),
             Error::ParseTime(ref err) => Some(err),
             Error::Template(ref err) => Some(err),
             Error::EnvVar(ref err) => Some(err),
