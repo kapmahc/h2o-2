@@ -15,7 +15,7 @@ Usage:
   h2o generate nginx
   h2o generate migration --name=<mn>
   h2o generate locale --name=<ln>
-  h2o db (migrate|rollback|status)
+  h2o db (create|connect|migrate|rollback|status|drop)
   h2o (-h | --help)
   h2o (-v | --version)
 
@@ -29,7 +29,7 @@ Options:
   --threads=<tn>    Threads in worker [default: 2].
 ");
 
-fn parse(r: Result<bool, env::Error>) {
+fn parse(r: Result<bool, env::errors::Error>) {
     match r {
         Ok(_) => info!("Done."),
         Err(e) => error!("{}", e),
@@ -42,6 +42,7 @@ pub fn run() {
         println!("{}", env::version());
         return;
     }
+
     if args.cmd_generate {
         if args.cmd_nginx {
             parse(generate::nginx());
@@ -53,6 +54,33 @@ pub fn run() {
         }
         if args.cmd_migration {
             parse(generate::migration(&args.flag_name));
+            return;
+        }
+    }
+
+    if args.cmd_db {
+        if args.cmd_create {
+            parse(db::create());
+            return;
+        }
+        if args.cmd_drop {
+            parse(db::drop());
+            return;
+        }
+        if args.cmd_connect {
+            parse(db::connect());
+            return;
+        }
+        if args.cmd_migrate {
+            parse(db::migrate());
+            return;
+        }
+        if args.cmd_rollback {
+            parse(db::rollback());
+            return;
+        }
+        if args.cmd_status {
+            parse(db::status());
             return;
         }
     }

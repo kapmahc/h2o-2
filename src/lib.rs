@@ -15,3 +15,4 @@ extern crate docopt;
 extern crate rocket;
 extern crate mustache;
 extern crate rustc_serialize;
+extern crate postgres;

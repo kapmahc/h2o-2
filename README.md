@@ -54,6 +54,7 @@ GRANT ALL PRIVILEGES ON DATABASE db-name TO user-name;
 ## Documents
 
 - [rust book](https://doc.rust-lang.org/book/)
+- [24 days of rust](siciarz.net)
 - [packages for rust](https://crates.io/)
 - [rocket.rs](https://rocket.rs/guide/)
 - [serde](https://serde.rs/)
