@@ -4,6 +4,7 @@ pub mod server;
 pub mod worker;
 
 use docopt;
+use super::env;
 
 docopt!(Args derive Debug, "
 H2O - A complete open source e-commerce solution by rust language.
@@ -24,15 +25,22 @@ Options:
   --threads=<tn>  Threads in worker [default: 2].
 ");
 
+fn parse(r: Result<bool, env::Error>) {
+    match r {
+        Ok(_) => info!("Done."),
+        Err(e) => error!("{}", e),
+    }
+}
+
 pub fn run() {
     let args: Args = Args::docopt().deserialize().unwrap_or_else(|e| e.exit());
     if args.flag_v || args.flag_version {
-        println!("{}", super::env::version());
+        println!("{}", env::version());
         return;
     }
     if args.cmd_generate {
         if args.cmd_nginx {
-            generate::nginx();
+            parse(generate::nginx());
             return;
         }
         if args.cmd_locale {
