@@ -2,15 +2,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { push } from 'react-router-redux'
+import Divider from 'material-ui/Divider';
 
 import Layout from '../../layouts/Application'
 
 class Widget extends Component {
   render() {
-    const {cards, push} = this.props
     return (
       <Layout breads={[]}>
         <div>install</div>
+         <Divider/>
       </Layout>
     );
   }

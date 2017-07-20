@@ -33,7 +33,7 @@ const main = (id, user) => {
   addLocaleData(user.data)
 
   ReactDOM.render(
-    (<Provider store={store}>      
+    (<Provider store={store}>
       <IntlProvider locale={user.locale} messages={user.messages}>
         <ConnectedRouter history={history}>
           <Switch>

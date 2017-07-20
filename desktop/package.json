@@ -2,6 +2,7 @@
   "name": "desktop",
   "version": "0.1.0",
   "private": true,
+  "homepage": "/",
   "dependencies": {
     "history": "^4.6.3",
     "js-cookie": "^2.1.4",

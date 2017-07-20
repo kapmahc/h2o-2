@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {injectIntl, intlShape, FormattedMessage} from 'react-intl'
+import {injectIntl, intlShape} from 'react-intl'
 import { connect } from 'react-redux'
 import { push } from 'react-router-redux'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import {setLocale} from '../intl'
 import {signIn, signOut, refresh} from '../actions'
-import {get, _delete} from '../ajax'
 
 class WidgetF extends Component {
   render () {
-    <MuiThemeProvider>
-      <h1>application</h1>
-      <div>{children}</div>
-    </MuiThemeProvider>
+    const {children} = this.props
+    return (<MuiThemeProvider>
+      <div>
+        <h1>application</h1>
+        <div>{children}</div>
+      </div>
+    </MuiThemeProvider>)
   }
 }
 
@@ -30,6 +31,8 @@ WidgetF.propTypes = {
   intl: intlShape.isRequired,
 }
 
+const Widget = injectIntl(WidgetF)
+
 export default connect(
   state => ({
     user: state.currentUser,
@@ -37,6 +40,3 @@ export default connect(
   }),
   {push, signIn, refresh, signOut},
 )(Widget)
-
-
-const Widget = injectIntl(WidgetF)

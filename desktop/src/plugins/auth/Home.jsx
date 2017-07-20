@@ -6,8 +6,7 @@ import { push } from 'react-router-redux'
 import Layout from '../../layouts/Application'
 
 class Widget extends Component {
-  render() {
-    const {cards, push} = this.props
+  render() {    
     return (
       <Layout breads={[]}>
         <div>home</div>
