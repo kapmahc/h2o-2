@@ -65,3 +65,6 @@ GRANT ALL PRIVILEGES ON DATABASE db-name TO user-name;
 - [serde](https://serde.rs/)
 - [rustfmt](https://github.com/rust-lang-nursery/rustfmt/blob/master/atom.md)
 - [racer](https://atom.io/packages/autocomplete-racer)
+- [react with redux](http://redux.js.org/docs/basics/UsageWithReact.html)
+- [react router](https://reacttraining.com/react-router/web/guides/philosophy)
+- [material-ui](http://www.material-ui.com/#/)
