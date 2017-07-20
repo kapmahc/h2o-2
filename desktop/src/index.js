@@ -1,8 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+import {detectLocale} from './intl'
+import main from './main'
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import './main.css';
+
+injectTapEventPlugin()
+
+const user = detectLocale()
+main('root', user)
 registerServiceWorker();
