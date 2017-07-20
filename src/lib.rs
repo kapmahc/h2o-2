@@ -4,6 +4,7 @@
 
 pub mod app;
 pub mod env;
+pub mod plugins;
 
 extern crate time;
 #[macro_use]
