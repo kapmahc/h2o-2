@@ -31,8 +31,8 @@ Options:
 
 fn parse(r: env::errors::Result<bool>) {
     match r {
-        Ok(_) => info!("Done."),
-        Err(e) => error!("{}", e),
+        Ok(_) => println!("Done."),
+        Err(e) => println!("{}", e),
     }
 }
 
@@ -80,8 +80,18 @@ pub fn run() {
             return;
         }
     }
-    println!("{:?}", args);
-    // println!("{}", args.to_string());
-    // args.help(true)
 
+    if args.cmd_server {
+        parse(server::run(args.flag_worker));
+        return;
+    }
+    if args.cmd_worker {
+        match args.flag_threads.parse::<u32>() {
+            Ok(threads) => parse(worker::run(&args.flag_name, threads)),
+            Err(e) => println!("{}", e),
+        }
+        return;
+    }
+    // println!("{:?}", args);
+    println!("Unknown!");
 }

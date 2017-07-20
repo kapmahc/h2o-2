@@ -31,6 +31,7 @@ pub fn migrate() -> env::errors::Result<bool> {
         let rows = try!(stmt.query(&[&mig]));
         let count: i64 = rows.get(0).get(0);
         if count == 0 {
+            println!("Up migration {}", mig);
             let mut file = try!(File::open(
                 Path::new("db")
                     .join("migrations")
@@ -63,7 +64,7 @@ pub fn rollback() -> env::errors::Result<bool> {
         return Ok(true);
     }
     let mig: String = rows.get(0).get(0);
-    info!("Find migration {}", mig);
+    println!("Down migration {}", mig);
 
     let mut file = try!(File::open(
         Path::new("db")

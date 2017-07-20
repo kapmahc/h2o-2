@@ -1,3 +1,4 @@
+use std;
 use std::path::Path;
 use std::fs::{create_dir_all, OpenOptions};
 use std::os::unix::fs::OpenOptionsExt;
@@ -11,7 +12,7 @@ pub fn nginx() -> env::errors::Result<bool> {
     let root = "etc";
     try!(create_dir_all(root));
     let file = Path::new(root).join("nginx.conf");
-    info!("Creating file {}", file.display());
+    println!("Creating file {}", file.display());
 
     let mut fd = try!(
         OpenOptions::new()
@@ -23,10 +24,9 @@ pub fn nginx() -> env::errors::Result<bool> {
 
     let tpl = try!(compile_path(Path::new("templates").join("nginx.conf")));
     let data = MapBuilder::new()
-        .insert_str("hostname", "www.change-me.com")
-        .insert("port", &3000)
-        .expect("port")
-        .insert_bool("ssl", false)
+        .insert_str("name", try!(std::env::var("H2O_SERVER_NAME")))
+        .insert_str("port", try!(try!(std::env::var("ROCKET_PORT")).parse::<u32>()))
+        .insert_bool("ssl", try!(try!(std::env::var("H2O_SERVER_SSL")).parse::<bool>()))
         .build();
     try!(tpl.render_data(&mut fd, &data));
     Ok(true)
@@ -37,7 +37,7 @@ pub fn locale(name: &str) -> env::errors::Result<bool> {
     try!(create_dir_all(root));
 
     let file = Path::new(root).join(name).with_extension("yml");
-    info!("Creating file {}", file.display());
+    println!("Creating file {}", file.display());
     let mut fd = try!(
         OpenOptions::new()
             .write(true)
@@ -60,7 +60,7 @@ pub fn migration(name: &str) -> env::errors::Result<bool> {
     let files = vec!["up", "down"];
     for n in &files {
         let file = Path::new(&root).join(n).with_extension("sql");
-        info!("Creating file {}", file.display());
+        println!("Creating file {}", file.display());
         try!(
             OpenOptions::new()
                 .write(true)

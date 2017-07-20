@@ -5,9 +5,6 @@ extern crate log;
 
 fn main() {
     // env_logger::init().unwrap();
-    syslog::init(
-        syslog::Facility::LOG_USER,
-        log::LogLevelFilter::max(),
-        None).unwrap();
+    syslog::init(syslog::Facility::LOG_USER, log::LogLevelFilter::max(), None).unwrap();
     h2o::app::run()
 }
