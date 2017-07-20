@@ -12,9 +12,8 @@ H2O - A complete open source e-commerce solution by rust language.
 Usage:
   h2o server [--worker]
   h2o worker [--name=<wn>] [--threads=<tn>]
-  h2o generate nginx
-  h2o generate migration --name=<mn>
-  h2o generate locale --name=<ln>
+  h2o generate (config|nginx)
+  h2o generate (migration|locale) --name=<fn>
   h2o db (create|migrate|rollback|status|drop)
   h2o (-h | --help)
   h2o (-v | --version)
@@ -24,8 +23,7 @@ Options:
   --version         Show version.
   --worker          Start with a background-job worker.
   --name=<wn>       Background-job worker's name, default is hostname.
-  --name=<mn>       Migration's name.
-  --name=<ln>       Locale's name.
+  --name=<fn>       Filename.
   --threads=<tn>    Threads in worker [default: 2].
 ");
 
@@ -44,6 +42,10 @@ pub fn run() {
     }
 
     if args.cmd_generate {
+        if args.cmd_config {
+            parse(generate::config());
+            return;
+        }
         if args.cmd_nginx {
             parse(generate::nginx());
             return;

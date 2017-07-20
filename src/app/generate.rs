@@ -8,6 +8,12 @@ use time;
 use mustache::{compile_path, MapBuilder};
 use super::super::env;
 
+pub fn config() -> env::errors::Result<bool> {
+    let cfg = env::config::Config::new();
+    try!(cfg.write("config"));
+    Ok(true)
+}
+
 pub fn nginx() -> env::errors::Result<bool> {
     let root = "etc";
     try!(create_dir_all(root));
@@ -25,8 +31,14 @@ pub fn nginx() -> env::errors::Result<bool> {
     let tpl = try!(compile_path(Path::new("templates").join("nginx.conf")));
     let data = MapBuilder::new()
         .insert_str("name", try!(std::env::var("H2O_SERVER_NAME")))
-        .insert_str("port", try!(try!(std::env::var("ROCKET_PORT")).parse::<u32>()))
-        .insert_bool("ssl", try!(try!(std::env::var("H2O_SERVER_SSL")).parse::<bool>()))
+        .insert_str(
+            "port",
+            try!(try!(std::env::var("ROCKET_PORT")).parse::<u32>()),
+        )
+        .insert_bool(
+            "ssl",
+            try!(try!(std::env::var("H2O_SERVER_SSL")).parse::<bool>()),
+        )
         .build();
     try!(tpl.render_data(&mut fd, &data));
     Ok(true)

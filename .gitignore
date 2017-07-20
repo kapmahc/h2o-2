@@ -9,6 +9,7 @@ target/
 # test
 /tmp
 /etc
+/config.toml
 
 # build
 /dist

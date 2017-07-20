@@ -1,6 +1,8 @@
 pub mod db;
+pub mod config;
 pub mod cache;
 pub mod errors;
+
 
 pub fn version() -> String {
     format!(
