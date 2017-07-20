@@ -2,7 +2,9 @@ use std::path::Path;
 use std::vec::Vec;
 use std::fs::{self, File};
 use std::io::prelude::Read;
+use std::collections::BTreeMap;
 
+use time;
 use postgres;
 
 use super::super::env;
@@ -76,6 +78,25 @@ pub fn rollback() -> Result<bool, env::errors::Error> {
 }
 
 pub fn status() -> Result<bool, env::errors::Error> {
+    let db = try!(open());
+    let mut items = BTreeMap::new();
+    for mig in try!(migrations()) {
+        let stmt =
+            try!(db.prepare("SELECT created_at FROM schema_migrations WHERE version = $1 LIMIT 1")
+                .map_err(env::errors::Error::Postgres));
+        let rows = try!(stmt.query(&[&mig]).map_err(env::errors::Error::Postgres));
+        if rows.len() == 0 {
+            items.insert(mig, "None".to_string());
+        } else {
+            let created: time::Timespec = rows.get(0).get(0);
+            items.insert(mig, format!("{}", time::at(created).rfc822()));
+        }
+    }
+
+    println!("{:<32}\t{}", "NAME", "TIMESTAMP");
+    for (k, v) in items {
+        println!("{:<32}\t{}", k, v);
+    }
     Ok(true)
 }
 
