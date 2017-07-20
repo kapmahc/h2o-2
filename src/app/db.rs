@@ -46,6 +46,32 @@ pub fn migrate() -> Result<bool, env::errors::Error> {
 }
 
 pub fn rollback() -> Result<bool, env::errors::Error> {
+    let con = try!(open());
+    let db = try!(con.transaction().map_err(env::errors::Error::Postgres));
+    let stmt =
+        try!(db.prepare("SELECT version FROM schema_migrations ORDER BY version DESC LIMIT 1")
+            .map_err(env::errors::Error::Postgres));
+    let rows = try!(stmt.query(&[]).map_err(env::errors::Error::Postgres));
+    if rows.len() == 0 {
+        error!("Empty database.");
+        return Ok(true);
+    }
+    let mig: String = rows.get(0).get(0);
+    info!("Find migration {}", mig);
+
+    let mut file = try!(File::open(Path::new("db")
+            .join("migrations")
+            .join(&mig)
+            .join("down")
+            .with_extension("sql"))
+        .map_err(env::errors::Error::Io));
+    let mut sql = String::new();
+    try!(file.read_to_string(&mut sql).map_err(env::errors::Error::Io));
+    try!(db.batch_execute(&sql).map_err(env::errors::Error::Postgres));
+    try!(db.execute("DELETE FROM schema_migrations WHERE version = $1", &[&mig])
+        .map_err(env::errors::Error::Postgres));
+
+    try!(db.commit().map_err(env::errors::Error::Postgres));
     Ok(true)
 }
 
