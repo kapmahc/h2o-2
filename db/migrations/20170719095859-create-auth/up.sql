@@ -106,7 +106,7 @@ CREATE INDEX idx_attachments_resource_type
 CREATE INDEX idx_attachments_media_type
   ON attachments (media_type);
 
-  REATE TABLE leave_words (
+  CREATE TABLE leave_words (
     id         BIGSERIAL PRIMARY KEY,
     body       TEXT                        NOT NULL,
     type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',

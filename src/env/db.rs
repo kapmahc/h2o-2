@@ -18,7 +18,9 @@ impl Config {
         let name = try!(env::var("H2O_DATABASE_NAME").map_err(errors::Error::EnvVar));
         let user = try!(env::var("H2O_DATABASE_USER").map_err(errors::Error::EnvVar));
         let password = try!(env::var("H2O_DATABASE_PASSWORD").map_err(errors::Error::EnvVar));
-        let port = try!(try!(env::var("H2O_DATABASE_PORT").map_err(errors::Error::EnvVar)).parse::<i32>().map_err(errors::Error::ParseInt));
+        let port = try!(try!(env::var("H2O_DATABASE_PORT").map_err(errors::Error::EnvVar))
+            .parse::<i32>()
+            .map_err(errors::Error::ParseInt));
         Ok(Config {
             host: host,
             port: port,
