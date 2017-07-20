@@ -7,7 +7,7 @@ use time;
 use mustache::{compile_path, MapBuilder};
 use super::super::env;
 
-pub fn nginx() -> Result<bool, env::errors::Error> {
+pub fn nginx() -> env::errors::Result<bool> {
     let root = "etc";
     try!(create_dir_all(root));
     let file = Path::new(root).join("nginx.conf");
@@ -32,7 +32,7 @@ pub fn nginx() -> Result<bool, env::errors::Error> {
     Ok(true)
 }
 
-pub fn locale(name: &str) -> Result<bool, env::errors::Error> {
+pub fn locale(name: &str) -> env::errors::Result<bool> {
     let root = "locales";
     try!(create_dir_all(root));
 
@@ -49,7 +49,7 @@ pub fn locale(name: &str) -> Result<bool, env::errors::Error> {
     Ok(true)
 }
 
-pub fn migration(name: &str) -> Result<bool, env::errors::Error> {
+pub fn migration(name: &str) -> env::errors::Result<bool> {
     let now = time::now();
     let ts = try!(time::strftime("%Y%m%d%H%M%S", &now));
 

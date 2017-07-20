@@ -4,7 +4,7 @@ use time;
 use mustache;
 use postgres;
 
-type Result<T> = result::Result<T, Box<error::Error>>;
+pub type Result<T> = result::Result<T, Box<error::Error>>;
 
 #[derive(Debug)]
 pub enum Error {

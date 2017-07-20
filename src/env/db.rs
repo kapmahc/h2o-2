@@ -13,7 +13,7 @@ pub struct Config {
 }
 
 impl Config {
-    pub fn new() -> Result<Config, errors::Error> {
+    pub fn new() -> errors::Result<Config> {
         let host = try!(env::var("H2O_DATABASE_HOST"));
         let name = try!(env::var("H2O_DATABASE_NAME"));
         let user = try!(env::var("H2O_DATABASE_USER"));
@@ -28,7 +28,7 @@ impl Config {
         })
     }
 
-    fn exec(&self, sql: String) -> Result<bool, errors::Error> {
+    fn exec(&self, sql: String) -> errors::Result<bool> {
         info!("Open database: postgres@{}:{}", self.host, self.port);
         println!("Please input password:");
         let mut pwd = String::new();
@@ -43,20 +43,20 @@ impl Config {
         Ok(true)
     }
 
-    pub fn create(&self) -> Result<bool, errors::Error> {
+    pub fn create(&self) -> errors::Result<bool> {
         self.exec(format!(
             "CREATE DATABASE {} WITH ENCODING = 'UTF8';",
             self.name
         ))
     }
 
-    pub fn drop(&self) -> Result<bool, errors::Error> {
+    pub fn drop(&self) -> errors::Result<bool> {
         self.exec(format!("DROP DATABASE {};", self.name))
     }
 
 
 
-    pub fn open(&self) -> Result<Connection, errors::Error> {
+    pub fn open(&self) -> errors::Result<Connection> {
         let url = format!(
             "postgres://{}:{}@{}:{}/{}",
             self.user,

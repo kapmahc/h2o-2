@@ -9,17 +9,17 @@ use postgres;
 
 use super::super::env;
 
-pub fn create() -> Result<bool, env::errors::Error> {
+pub fn create() -> env::errors::Result<bool> {
     try!(try!(env::db::Config::new()).create());
     Ok(true)
 }
 
-pub fn drop() -> Result<bool, env::errors::Error> {
+pub fn drop() -> env::errors::Result<bool> {
     try!(try!(env::db::Config::new()).drop());
     Ok(true)
 }
 
-pub fn migrate() -> Result<bool, env::errors::Error> {
+pub fn migrate() -> env::errors::Result<bool> {
     let con = try!(open());
     let db = try!(con.transaction());
 
@@ -51,7 +51,7 @@ pub fn migrate() -> Result<bool, env::errors::Error> {
     Ok(true)
 }
 
-pub fn rollback() -> Result<bool, env::errors::Error> {
+pub fn rollback() -> env::errors::Result<bool> {
     let con = try!(open());
     let db = try!(con.transaction());
     let stmt = try!(db.prepare(
@@ -84,7 +84,7 @@ pub fn rollback() -> Result<bool, env::errors::Error> {
     Ok(true)
 }
 
-pub fn status() -> Result<bool, env::errors::Error> {
+pub fn status() -> env::errors::Result<bool> {
     let db = try!(open());
     let mut items = BTreeMap::new();
     for mig in try!(migrations()) {
@@ -109,7 +109,7 @@ pub fn status() -> Result<bool, env::errors::Error> {
 
 
 
-fn migrations() -> Result<Vec<String>, env::errors::Error> {
+fn migrations() -> env::errors::Result<Vec<String>> {
     let root = Path::new("db").join("migrations");
     let mut items = Vec::new();
     if root.is_dir() {
@@ -132,7 +132,7 @@ fn migrations() -> Result<Vec<String>, env::errors::Error> {
     Ok(items)
 }
 
-fn open() -> Result<postgres::Connection, env::errors::Error> {
+fn open() -> env::errors::Result<postgres::Connection> {
     let db = try!(try!(env::db::Config::new()).open());
     try!(db.execute(
         "CREATE TABLE IF NOT EXISTS schema_migrations(version VARCHAR(255) PRIMARY \

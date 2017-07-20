@@ -29,7 +29,7 @@ Options:
   --threads=<tn>    Threads in worker [default: 2].
 ");
 
-fn parse(r: Result<bool, env::errors::Error>) {
+fn parse(r: env::errors::Result<bool>) {
     match r {
         Ok(_) => info!("Done."),
         Err(e) => error!("{}", e),
