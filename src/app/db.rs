@@ -101,9 +101,6 @@ pub fn status() -> Result<bool, env::errors::Error> {
 }
 
 
-pub fn connect() -> Result<bool, env::errors::Error> {
-    Ok(true)
-}
 
 fn migrations() -> Result<Vec<String>, env::errors::Error> {
     let root = Path::new("db").join("migrations");

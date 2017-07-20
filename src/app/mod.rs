@@ -15,7 +15,7 @@ Usage:
   h2o generate nginx
   h2o generate migration --name=<mn>
   h2o generate locale --name=<ln>
-  h2o db (create|connect|migrate|rollback|status|drop)
+  h2o db (create|migrate|rollback|status|drop)
   h2o (-h | --help)
   h2o (-v | --version)
 
@@ -65,10 +65,6 @@ pub fn run() {
         }
         if args.cmd_drop {
             parse(db::drop());
-            return;
-        }
-        if args.cmd_connect {
-            parse(db::connect());
             return;
         }
         if args.cmd_migrate {

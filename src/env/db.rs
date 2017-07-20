@@ -55,6 +55,8 @@ impl Config {
         self.exec(format!("DROP DATABASE {};", self.name))
     }
 
+
+
     pub fn open(&self) -> Result<Connection, errors::Error> {
         let url = format!("postgres://{}:{}@{}:{}/{}",
                           self.user,
