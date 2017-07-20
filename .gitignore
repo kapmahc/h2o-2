@@ -9,3 +9,7 @@ target/
 # test
 /tmp
 /etc
+
+# build
+/dist
+/dist.tar.bz2
