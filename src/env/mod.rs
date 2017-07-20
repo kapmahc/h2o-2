@@ -2,6 +2,7 @@ pub mod db;
 pub mod config;
 pub mod cache;
 pub mod errors;
+pub mod utils;
 
 
 pub fn version() -> String {

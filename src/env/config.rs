@@ -3,12 +3,17 @@ use std::io::prelude::Read;
 use std::io::Write;
 use std::os::unix::fs::OpenOptionsExt;
 use std::path::Path;
+use std::str::FromStr;
 
+use log;
 use toml;
+use rocket::config::Environment;
 use super::errors;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
+    env: String,
+    log_level: String,
     http: Http,
     secrets: Secrets,
     postgresql: PostgreSql,
@@ -49,15 +54,17 @@ pub struct Secrets {
 impl Config {
     pub fn new() -> Config {
         Config {
+            env: format!("{}", Environment::Development),
+            log_level: format!("{}", log::LogLevelFilter::Debug),
             http: Http {
                 port: 8080,
                 ssl: false,
                 host: "www.change-me.com".to_string(),
             },
             secrets: Secrets {
-                jwt: "j".to_string(),
-                aes: "a".to_string(),
-                hmac: "h".to_string(),
+                jwt: super::utils::random_string(32),
+                aes: super::utils::random_string(32),
+                hmac: super::utils::random_string(32),
             },
             postgresql: PostgreSql {
                 host: "localhost".to_string(),
@@ -74,6 +81,7 @@ impl Config {
             },
         }
     }
+
     pub fn read(name: &'static str) -> errors::Result<Config> {
         let file = Path::new(name).with_extension("toml");
         info!("Reading from {}", file.display());
@@ -98,5 +106,12 @@ impl Config {
         let txt = try!(toml::to_string(&self));
         try!(writeln!(&mut fd, "{}", txt));
         Ok(format!("{}", file.display()))
+    }
+
+    pub fn is_prod(&self) -> bool {
+        match Environment::from_str(&self.env) {
+            Ok(e) => e.is_prod(),
+            Err(_) => false,
+        }
     }
 }

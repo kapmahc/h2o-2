@@ -20,3 +20,4 @@ extern crate mustache;
 extern crate rustc_serialize;
 extern crate postgres;
 extern crate toml;
+extern crate rand;
