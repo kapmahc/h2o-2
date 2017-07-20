@@ -1,8 +1,10 @@
-use std::{io, num, error, fmt, env};
+use std::{io, num, error, fmt, env, result};
 
 use time;
 use mustache;
 use postgres;
+
+type Result<T> = result::Result<T, Box<error::Error>>;
 
 #[derive(Debug)]
 pub enum Error {
@@ -13,6 +15,48 @@ pub enum Error {
     Template(mustache::Error),
     Postgres(postgres::error::Error),
     PostgresConnect(postgres::error::ConnectError),
+}
+
+impl From<io::Error> for Error {
+    fn from(err: io::Error) -> Error {
+        Error::Io(err)
+    }
+}
+
+impl From<num::ParseIntError> for Error {
+    fn from(err: num::ParseIntError) -> Error {
+        Error::ParseInt(err)
+    }
+}
+
+impl From<env::VarError> for Error {
+    fn from(err: env::VarError) -> Error {
+        Error::EnvVar(err)
+    }
+}
+
+impl From<time::ParseError> for Error {
+    fn from(err: time::ParseError) -> Error {
+        Error::ParseTime(err)
+    }
+}
+
+impl From<postgres::error::Error> for Error {
+    fn from(err: postgres::error::Error) -> Error {
+        Error::Postgres(err)
+    }
+}
+
+impl From<postgres::error::ConnectError> for Error {
+    fn from(err: postgres::error::ConnectError) -> Error {
+        Error::PostgresConnect(err)
+    }
+}
+
+impl From<mustache::Error> for Error {
+    fn from(err: mustache::Error) -> Error {
+        Error::Template(err)
+    }
 }
 
 impl fmt::Display for Error {

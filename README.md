@@ -7,7 +7,12 @@ A complete open source e-commerce solution by rust language.
 ```bash
 sudo pacman -S rustup
 rustup default nightly
-rustup update && cargo update # upgrade
+# upgrade
+rustup update && cargo update
+# for development
+rustup run nightly cargo install rustfmt-nightly
+cargo install racer
+rustup component add rust-src
 ```
 
 ## Build
@@ -58,3 +63,5 @@ GRANT ALL PRIVILEGES ON DATABASE db-name TO user-name;
 - [packages for rust](https://crates.io/)
 - [rocket.rs](https://rocket.rs/guide/)
 - [serde](https://serde.rs/)
+- [rustfmt](https://github.com/rust-lang-nursery/rustfmt/blob/master/atom.md)
+- [racer](https://atom.io/packages/autocomplete-racer)

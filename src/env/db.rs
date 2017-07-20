@@ -14,13 +14,11 @@ pub struct Config {
 
 impl Config {
     pub fn new() -> Result<Config, errors::Error> {
-        let host = try!(env::var("H2O_DATABASE_HOST").map_err(errors::Error::EnvVar));
-        let name = try!(env::var("H2O_DATABASE_NAME").map_err(errors::Error::EnvVar));
-        let user = try!(env::var("H2O_DATABASE_USER").map_err(errors::Error::EnvVar));
-        let password = try!(env::var("H2O_DATABASE_PASSWORD").map_err(errors::Error::EnvVar));
-        let port = try!(try!(env::var("H2O_DATABASE_PORT").map_err(errors::Error::EnvVar))
-            .parse::<i32>()
-            .map_err(errors::Error::ParseInt));
+        let host = try!(env::var("H2O_DATABASE_HOST"));
+        let name = try!(env::var("H2O_DATABASE_NAME"));
+        let user = try!(env::var("H2O_DATABASE_USER"));
+        let password = try!(env::var("H2O_DATABASE_PASSWORD"));
+        let port = try!(try!(env::var("H2O_DATABASE_PORT")).parse::<i32>());
         Ok(Config {
             host: host,
             port: port,
@@ -34,21 +32,22 @@ impl Config {
         info!("Open database: postgres@{}:{}", self.host, self.port);
         println!("Please input password:");
         let mut pwd = String::new();
-        try!(io::stdin().read_line(&mut pwd).map_err(errors::Error::Io));
+        try!(io::stdin().read_line(&mut pwd));
         pwd.pop();
 
-        let db = try!(Connection::connect(format!("postgres://postgres:{}@{}:{}",
-                                                  pwd,
-                                                  self.host,
-                                                  self.port),
-                                          TlsMode::None)
-            .map_err(errors::Error::PostgresConnect));
-        try!(db.execute(&sql, &[]).map_err(errors::Error::Postgres));
+        let db = try!(Connection::connect(
+            format!("postgres://postgres:{}@{}:{}", pwd, self.host, self.port),
+            TlsMode::None
+        ));
+        try!(db.execute(&sql, &[]));
         Ok(true)
     }
 
     pub fn create(&self) -> Result<bool, errors::Error> {
-        self.exec(format!("CREATE DATABASE {} WITH ENCODING = 'UTF8';", self.name))
+        self.exec(format!(
+            "CREATE DATABASE {} WITH ENCODING = 'UTF8';",
+            self.name
+        ))
     }
 
     pub fn drop(&self) -> Result<bool, errors::Error> {
@@ -58,13 +57,15 @@ impl Config {
 
 
     pub fn open(&self) -> Result<Connection, errors::Error> {
-        let url = format!("postgres://{}:{}@{}:{}/{}",
-                          self.user,
-                          self.password,
-                          self.host,
-                          self.port,
-                          self.name);
+        let url = format!(
+            "postgres://{}:{}@{}:{}/{}",
+            self.user,
+            self.password,
+            self.host,
+            self.port,
+            self.name
+        );
         debug!("Open database: {}", url);
-        Ok(try!(Connection::connect(url, TlsMode::None).map_err(errors::Error::PostgresConnect)))
+        Ok(try!(Connection::connect(url, TlsMode::None)))
     }
 }
