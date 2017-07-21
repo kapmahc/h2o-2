@@ -7,6 +7,7 @@ target/
 .*.un~
 
 # test
+/public
 /tmp
 /etc
 /config.toml
