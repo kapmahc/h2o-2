@@ -40,6 +40,18 @@ pub struct Http {
     host: String,
 }
 
+impl Http {
+    pub fn host(&self) -> &str {
+        &self.host
+    }
+    pub fn port(&self) -> i32 {
+        self.port
+    }
+    pub fn ssl(&self) -> bool {
+        self.ssl
+    }
+}
+
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Redis {

@@ -1,7 +1,7 @@
 
 use super::super::env;
 
-pub fn run(name: &str, threads: u32) -> env::errors::Result<bool> {
+pub fn run(cfg: &env::config::Config, name: &str, threads: usize) -> env::errors::Result<bool> {
     println!("Start worker {}[{}]", name, threads);
     Ok(true)
 }

@@ -50,10 +50,6 @@ pub fn run() {
             parse(generate::config());
             return;
         }
-        if args.cmd_nginx {
-            parse(generate::nginx());
-            return;
-        }
         if args.cmd_locale {
             parse(generate::locale(&args.flag_name));
             return;
@@ -66,6 +62,13 @@ pub fn run() {
 
     match env::config::Config::read("config") {
         Ok(cfg) => {
+            if args.cmd_generate {
+                if args.cmd_nginx {
+                    parse(generate::nginx(&cfg));
+                    return;
+                }
+            }
+
             if args.cmd_db {
                 if args.cmd_create {
                     parse(db::create(&cfg));
@@ -90,13 +93,13 @@ pub fn run() {
             }
 
             if args.cmd_server {
-                parse(server::run(args.flag_worker));
+                parse(server::run(&cfg, args.flag_worker));
                 return;
             }
 
             if args.cmd_worker {
-                match args.flag_threads.parse::<u32>() {
-                    Ok(threads) => parse(worker::run(&args.flag_name, threads)),
+                match args.flag_threads.parse::<usize>() {
+                    Ok(threads) => parse(worker::run(&cfg, &args.flag_name, threads)),
                     Err(e) => println!("{}", e),
                 }
                 return;

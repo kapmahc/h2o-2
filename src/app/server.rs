@@ -4,7 +4,7 @@
 
 use super::super::{env, plugins};
 
-pub fn run(worker: bool) -> env::errors::Result<bool> {
+pub fn run(cfg: &env::config::Config, worker: bool) -> env::errors::Result<bool> {
     if worker {
         // TODO
     }

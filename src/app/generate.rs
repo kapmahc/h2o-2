@@ -1,20 +1,19 @@
-use std;
 use std::path::Path;
 use std::fs::{create_dir_all, OpenOptions};
 use std::os::unix::fs::OpenOptionsExt;
 use std::io::Write;
+
 use time;
-
 use mustache::{compile_path, MapBuilder};
-use super::super::env;
+use super::super::env::{config, errors};
 
-pub fn config() -> env::errors::Result<bool> {
-    let cfg = env::config::Config::new();
+pub fn config() -> errors::Result<bool> {
+    let cfg = config::Config::new();
     try!(cfg.write("config"));
     Ok(true)
 }
 
-pub fn nginx() -> env::errors::Result<bool> {
+pub fn nginx(cfg: &config::Config) -> errors::Result<bool> {
     let root = "etc";
     try!(create_dir_all(root));
     let file = Path::new(root).join("nginx.conf");
@@ -30,21 +29,15 @@ pub fn nginx() -> env::errors::Result<bool> {
 
     let tpl = try!(compile_path(Path::new("templates").join("nginx.conf")));
     let data = MapBuilder::new()
-        .insert_str("name", try!(std::env::var("H2O_SERVER_NAME")))
-        .insert_str(
-            "port",
-            try!(try!(std::env::var("ROCKET_PORT")).parse::<u32>()),
-        )
-        .insert_bool(
-            "ssl",
-            try!(try!(std::env::var("H2O_SERVER_SSL")).parse::<bool>()),
-        )
+        .insert_str("name", cfg.http.host())
+        .insert_str("port", cfg.http.port())
+        .insert_bool("ssl", cfg.http.ssl())
         .build();
     try!(tpl.render_data(&mut fd, &data));
     Ok(true)
 }
 
-pub fn locale(name: &str) -> env::errors::Result<bool> {
+pub fn locale(name: &str) -> errors::Result<bool> {
     let root = "locales";
     try!(create_dir_all(root));
 
@@ -61,7 +54,7 @@ pub fn locale(name: &str) -> env::errors::Result<bool> {
     Ok(true)
 }
 
-pub fn migration(name: &str) -> env::errors::Result<bool> {
+pub fn migration(name: &str) -> errors::Result<bool> {
     let now = time::now();
     let ts = try!(time::strftime("%Y%m%d%H%M%S", &now));
 
