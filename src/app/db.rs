@@ -9,18 +9,19 @@ use postgres;
 
 use super::super::env;
 
-pub fn create() -> env::errors::Result<bool> {
-    try!(try!(env::db::Config::new()).create());
+pub fn create(cfg: &env::config::Config) -> env::errors::Result<bool> {
+    try!(cfg.postgresql.create());
     Ok(true)
 }
 
-pub fn drop() -> env::errors::Result<bool> {
-    try!(try!(env::db::Config::new()).drop());
+pub fn drop(cfg: &env::config::Config) -> env::errors::Result<bool> {
+    try!(cfg.postgresql.drop());
     Ok(true)
 }
 
-pub fn migrate() -> env::errors::Result<bool> {
-    let con = try!(open());
+pub fn migrate(cfg: &env::config::Config) -> env::errors::Result<bool> {
+    let con = try!(cfg.postgresql.open());
+    try!(check(&con));
     let db = try!(con.transaction());
 
     for mig in try!(migrations()) {
@@ -52,9 +53,11 @@ pub fn migrate() -> env::errors::Result<bool> {
     Ok(true)
 }
 
-pub fn rollback() -> env::errors::Result<bool> {
-    let con = try!(open());
+pub fn rollback(cfg: &env::config::Config) -> env::errors::Result<bool> {
+    let con = try!(cfg.postgresql.open());
+    try!(check(&con));
     let db = try!(con.transaction());
+
     let stmt = try!(db.prepare(
         "SELECT version FROM schema_migrations ORDER BY version DESC LIMIT 1"
     ));
@@ -85,8 +88,10 @@ pub fn rollback() -> env::errors::Result<bool> {
     Ok(true)
 }
 
-pub fn status() -> env::errors::Result<bool> {
-    let db = try!(open());
+pub fn status(cfg: &env::config::Config) -> env::errors::Result<bool> {
+    let db = try!(cfg.postgresql.open());
+    try!(check(&db));
+
     let mut items = BTreeMap::new();
     for mig in try!(migrations()) {
         let stmt = try!(db.prepare(
@@ -105,7 +110,7 @@ pub fn status() -> env::errors::Result<bool> {
     for (k, v) in items {
         println!("{:<32}\t{}", k, v);
     }
-    Ok(true)
+    Ok(false)
 }
 
 
@@ -133,12 +138,11 @@ fn migrations() -> env::errors::Result<Vec<String>> {
     Ok(items)
 }
 
-fn open() -> env::errors::Result<postgres::Connection> {
-    let db = try!(try!(env::db::Config::new()).open());
+fn check(db: &postgres::Connection) -> env::errors::Result<()> {
     try!(db.execute(
         "CREATE TABLE IF NOT EXISTS schema_migrations(version VARCHAR(255) PRIMARY \
          KEY, created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now())",
         &[]
     ));
-    Ok(db)
+    Ok(())
 }

@@ -4,20 +4,33 @@ use std::io::Write;
 use std::os::unix::fs::OpenOptionsExt;
 use std::path::Path;
 use std::str::FromStr;
+use std::env;
 
-use log;
+use log::LogLevelFilter;
 use toml;
 use rocket::config::Environment;
 use super::errors;
 
+pub fn log_level() -> LogLevelFilter {
+    let lv = LogLevelFilter::max();
+    match env::var("RUST_LOG") {
+        Ok(lvl) => {
+            match LogLevelFilter::from_str(&lvl) {
+                Ok(v) => v,
+                Err(_) => lv,
+            }
+        }
+        Err(_) => lv,
+    }
+}
+
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Config {
     env: String,
-    log_level: String,
-    http: Http,
-    secrets: Secrets,
-    postgresql: PostgreSql,
-    redis: Redis,
+    pub http: Http,
+    pub secrets: Secrets,
+    pub postgresql: super::db::PostgreSql,
+    pub redis: Redis,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -27,15 +40,6 @@ pub struct Http {
     host: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct PostgreSql {
-    host: String,
-    port: i32,
-    name: String,
-    user: String,
-    password: String,
-    ssl_mode: String,
-}
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Redis {
@@ -55,7 +59,6 @@ impl Config {
     pub fn new() -> Config {
         Config {
             env: format!("{}", Environment::Development),
-            log_level: format!("{}", log::LogLevelFilter::Debug),
             http: Http {
                 port: 8080,
                 ssl: false,
@@ -66,14 +69,7 @@ impl Config {
                 aes: super::utils::random_string(32),
                 hmac: super::utils::random_string(32),
             },
-            postgresql: PostgreSql {
-                host: "localhost".to_string(),
-                port: 5432,
-                name: "h2o_dev".to_string(),
-                user: "postgres".to_string(),
-                password: "".to_string(),
-                ssl_mode: "disable".to_string(),
-            },
+            postgresql: super::db::PostgreSql::new(),
             redis: Redis {
                 host: "localhost".to_string(),
                 port: 6379,

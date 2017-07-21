@@ -29,7 +29,11 @@ Options:
 
 fn parse(r: env::errors::Result<bool>) {
     match r {
-        Ok(_) => println!("Done."),
+        Ok(ok) => {
+            if ok {
+                println!("Done.");
+            }
+        }
         Err(e) => println!("{}", e),
     }
 }
@@ -60,40 +64,47 @@ pub fn run() {
         }
     }
 
-    if args.cmd_db {
-        if args.cmd_create {
-            parse(db::create());
-            return;
+    match env::config::Config::read("config") {
+        Ok(cfg) => {
+            if args.cmd_db {
+                if args.cmd_create {
+                    parse(db::create(&cfg));
+                    return;
+                }
+                if args.cmd_drop {
+                    parse(db::drop(&cfg));
+                    return;
+                }
+                if args.cmd_migrate {
+                    parse(db::migrate(&cfg));
+                    return;
+                }
+                if args.cmd_rollback {
+                    parse(db::rollback(&cfg));
+                    return;
+                }
+                if args.cmd_status {
+                    parse(db::status(&cfg));
+                    return;
+                }
+            }
+
+            if args.cmd_server {
+                parse(server::run(args.flag_worker));
+                return;
+            }
+
+            if args.cmd_worker {
+                match args.flag_threads.parse::<u32>() {
+                    Ok(threads) => parse(worker::run(&args.flag_name, threads)),
+                    Err(e) => println!("{}", e),
+                }
+                return;
+            }
         }
-        if args.cmd_drop {
-            parse(db::drop());
-            return;
-        }
-        if args.cmd_migrate {
-            parse(db::migrate());
-            return;
-        }
-        if args.cmd_rollback {
-            parse(db::rollback());
-            return;
-        }
-        if args.cmd_status {
-            parse(db::status());
-            return;
-        }
+        Err(e) => println!("{}", e),
     }
 
-    if args.cmd_server {
-        parse(server::run(args.flag_worker));
-        return;
-    }
-    if args.cmd_worker {
-        match args.flag_threads.parse::<u32>() {
-            Ok(threads) => parse(worker::run(&args.flag_name, threads)),
-            Err(e) => println!("{}", e),
-        }
-        return;
-    }
     // println!("{:?}", args);
     println!("Unknown!");
 }

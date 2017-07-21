@@ -1,10 +1,10 @@
-use std::{env, io};
-
+use std::io;
 use postgres::{Connection, TlsMode};
-
 use super::errors;
 
-pub struct Config {
+
+#[derive(Serialize, Deserialize, Debug)]
+pub struct PostgreSql {
     host: String,
     port: i32,
     name: String,
@@ -12,20 +12,15 @@ pub struct Config {
     password: String,
 }
 
-impl Config {
-    pub fn new() -> errors::Result<Config> {
-        let host = try!(env::var("H2O_DATABASE_HOST"));
-        let name = try!(env::var("H2O_DATABASE_NAME"));
-        let user = try!(env::var("H2O_DATABASE_USER"));
-        let password = try!(env::var("H2O_DATABASE_PASSWORD"));
-        let port = try!(try!(env::var("H2O_DATABASE_PORT")).parse::<i32>());
-        Ok(Config {
-            host: host,
-            port: port,
-            name: name,
-            user: user,
-            password: password,
-        })
+impl PostgreSql {
+    pub fn new() -> PostgreSql {
+        PostgreSql {
+            host: "localhost".to_string(),
+            port: 5432,
+            name: "h2o_dev".to_string(),
+            user: "postgres".to_string(),
+            password: "".to_string(),
+        }
     }
 
     fn exec(&self, sql: String) -> errors::Result<bool> {
@@ -53,8 +48,6 @@ impl Config {
     pub fn drop(&self) -> errors::Result<bool> {
         self.exec(format!("DROP DATABASE {};", self.name))
     }
-
-
 
     pub fn open(&self) -> errors::Result<Connection> {
         let url = format!(
