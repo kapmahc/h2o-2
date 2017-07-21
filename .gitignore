@@ -1,0 +1,10 @@
+# java
+/.gradle
+/build
+
+# vim
+.*.swp
+.*.un~
+# intellij idea
+/.idea
+
