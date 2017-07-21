@@ -1,24 +1,28 @@
-
-// use rocket::custom;
-// use rocket::config::{Config, Environment};
-
-use super::super::{env, plugins};
+use rocket::{custom, config};
+use super::super::env;
+use super::super::plugins::auth::controllers as auth;
 
 pub fn run(cfg: &env::config::Config, worker: bool) -> env::errors::Result<bool> {
     if worker {
         // TODO
     }
-    // "staging".parse::<Environment>()
-    //
-    // let cfg = try!(
-    //     Config::build(Environment::Development)
-    //         .address("localhost")
-    //         .port(try!(try!(std::env::var("ROCKET_PORT")).parse::<u32>()))
-    //         .finalize()
-    // );
-    //
-    // rocket::custom(cfg, false)
-    //     .mount("/", routes![plugins::auth::controllers::get_site_info])
-    //     .launch();
+
+    let cfg = try!(
+        config::Config::build(cfg.env())
+            .address("localhost")
+            .port(cfg.http.port())
+            .finalize()
+    );
+
+    custom(cfg, false)
+        .mount(
+            "/api",
+            routes![
+                auth::get_site_info,
+                auth::post_users_sign_in,
+                auth::post_users_sign_up,
+            ],
+        )
+        .launch();
     Ok(true)
 }

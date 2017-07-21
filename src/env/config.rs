@@ -35,7 +35,7 @@ pub struct Config {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Http {
-    port: i32,
+    port: u16,
     ssl: bool,
     host: String,
 }
@@ -44,7 +44,7 @@ impl Http {
     pub fn host(&self) -> &str {
         &self.host
     }
-    pub fn port(&self) -> i32 {
+    pub fn port(&self) -> u16 {
         self.port
     }
     pub fn ssl(&self) -> bool {
@@ -65,7 +65,10 @@ pub struct Secrets {
     jwt: String,
     aes: String,
     hmac: String,
+    cors: String,
 }
+
+impl Secrets {}
 
 impl Config {
     pub fn new() -> Config {
@@ -80,6 +83,7 @@ impl Config {
                 jwt: super::utils::random_string(32),
                 aes: super::utils::random_string(32),
                 hmac: super::utils::random_string(32),
+                cors: super::utils::random_string(32),
             },
             postgresql: super::db::PostgreSql::new(),
             redis: Redis {
@@ -120,6 +124,13 @@ impl Config {
         match Environment::from_str(&self.env) {
             Ok(e) => e.is_prod(),
             Err(_) => false,
+        }
+    }
+
+    pub fn env(&self) -> Environment {
+        match self.env.parse::<Environment>() {
+            Ok(e) => e,
+            Err(_) => Environment::Development,
         }
     }
 }
