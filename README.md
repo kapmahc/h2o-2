@@ -1,7 +1,9 @@
 # H2O
+
 A complete open source e-commerce solution.
 
 ## Install jdk
+
 ```bash
 curl -s "https://get.sdkman.io" | zsh
 sdk install java
@@ -16,4 +18,4 @@ gradle build
 ```
 
 - [sdkman](http://sdkman.io/usage.html)
-- [spring](https://spring.io/guides)
+- [spring boot](https://spring.io/guides)
