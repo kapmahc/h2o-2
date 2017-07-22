@@ -9,6 +9,7 @@ import java.util.Date;
         name = "logs",
         indexes = {
                 @Index(name = "idx_logs_type", columnList = "type"),
+                @Index(name = "idx_logs_remote_ip", columnList = "remoteIp"),
         }
 )
 public class Log implements Serializable {
@@ -33,6 +34,8 @@ public class Log implements Serializable {
     private Type type;
     @Column(nullable = false)
     private String message;
+    @Column(nullable = false, length = 45)
+    private String remoteIp;
     @Column(nullable = false)
     private Date createdAt;
 
@@ -74,5 +77,13 @@ public class Log implements Serializable {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getRemoteIp() {
+        return remoteIp;
+    }
+
+    public void setRemoteIp(String remoteIp) {
+        this.remoteIp = remoteIp;
     }
 }

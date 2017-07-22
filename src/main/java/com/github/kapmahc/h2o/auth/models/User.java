@@ -18,6 +18,10 @@ import java.util.List;
         }
 )
 public class User implements Serializable {
+    public enum Type {
+        EMAIL
+    }
+
     @PrePersist
     protected void onCreate() {
         createdAt = new Date();
@@ -48,7 +52,8 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String providerId;
     @Column(nullable = false, length = 16)
-    private String providerType;
+    @Enumerated(EnumType.STRING)
+    private Type providerType;
     private Date confirmedAt;
     private Date lockedAt;
     private int signInCount;
@@ -121,11 +126,11 @@ public class User implements Serializable {
         this.providerId = providerId;
     }
 
-    public String getProviderType() {
+    public Type getProviderType() {
         return providerType;
     }
 
-    public void setProviderType(String providerType) {
+    public void setProviderType(Type providerType) {
         this.providerType = providerType;
     }
 

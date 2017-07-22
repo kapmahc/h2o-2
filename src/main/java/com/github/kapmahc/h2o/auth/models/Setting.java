@@ -31,11 +31,20 @@ public class Setting implements Serializable {
     private String key;
     @Column(nullable = false)
     @Lob
-    private byte[] val;
+    private String val;
     @Column(nullable = false)
     private Date createdAt;
     @Column(nullable = false)
     private Date updatedAt;
+    private boolean encrypt;
+
+    public boolean isEncrypt() {
+        return encrypt;
+    }
+
+    public void setEncrypt(boolean encrypt) {
+        this.encrypt = encrypt;
+    }
 
     public Long getId() {
         return id;
@@ -53,11 +62,12 @@ public class Setting implements Serializable {
         this.key = key;
     }
 
-    public byte[] getVal() {
+
+    public String getVal() {
         return val;
     }
 
-    public void setVal(byte[] val) {
+    public void setVal(String val) {
         this.val = val;
     }
 
