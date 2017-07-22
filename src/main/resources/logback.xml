@@ -2,7 +2,7 @@
 <configuration>
     <include resource="logback-base.xml"/>
 
-    <logger name="com.github.kapmahc" level="DEBUG"/>
+    <logger name="com.github.kapmahc.h2o" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="stdout"/>
