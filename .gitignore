@@ -1,6 +1,7 @@
 # java
 /.gradle
 /build
+/tmp
 
 # node
 /node_modules
