@@ -3,7 +3,7 @@ CREATE TABLE users (
   name               VARCHAR(32)                 NOT NULL,
   email              VARCHAR(255)                NOT NULL,
   uid                VARCHAR(36)                 NOT NULL,
-  password           bytea,
+  password           BYTEA,
   provider_id        VARCHAR(255)                NOT NULL,
   provider_type      VARCHAR(32)                 NOT NULL,
   home               VARCHAR(255),
@@ -34,7 +34,7 @@ CREATE INDEX idx_users_provider_type
 
 CREATE TABLE logs (
   id         BIGSERIAL PRIMARY KEY,
-  user_id    BIGINT                      REFERENCES users,
+  user_id    BIGINT REFERENCES users,
   type       VARCHAR(8)                  NOT NULL DEFAULT 'info',
   ip         INET                        NOT NULL,
   message    VARCHAR(255)                NOT NULL,
@@ -60,8 +60,8 @@ CREATE INDEX idx_roles_resource_type
 
 CREATE TABLE policies (
   id         BIGSERIAL PRIMARY KEY,
-  user_id    BIGINT                      REFERENCES users,
-  role_id    BIGINT                      REFERENCES roles,
+  user_id    BIGINT REFERENCES users,
+  role_id    BIGINT REFERENCES roles,
   start_up   DATE                        NOT NULL DEFAULT current_date,
   shut_down  DATE                        NOT NULL DEFAULT '2016-12-13',
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
@@ -93,7 +93,7 @@ CREATE TABLE attachments (
   media_type    VARCHAR(32)                 NOT NULL,
   resource_type VARCHAR(255)                NOT NULL,
   resource_id   BIGINT                      NOT NULL,
-  user_id       BIGINT                      REFERENCES users,
+  user_id       BIGINT REFERENCES users,
   created_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at    TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
@@ -114,38 +114,40 @@ CREATE TABLE leave_words (
 );
 
 CREATE TABLE links (
-  id BIGSERIAL PRIMARY KEY,
-  href VARCHAR(255) NOT NULL,
-  label VARCHAR(255) NOT NULL,
-  loc VARCHAR(16) NOT NULL,
-  parent_id BIGINT NOT NULL DEFAULT 0,
-  sort_order INT NOT NULL DEFAULT 0,
+  id         BIGSERIAL PRIMARY KEY,
+  href       VARCHAR(255)                NOT NULL,
+  label      VARCHAR(255)                NOT NULL,
+  loc        VARCHAR(16)                 NOT NULL,
+  parent_id  BIGINT                      NOT NULL DEFAULT 0,
+  sort_order INT                         NOT NULL DEFAULT 0,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
-CREATE INDEX idx_links_loc ON links (loc);
+CREATE INDEX idx_links_loc
+  ON links (loc);
 
 CREATE TABLE cards (
-  id BIGSERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  summary VARCHAR(2048) NOT NULL,
-  type VARCHAR(8) NOT NULL DEFAULT 'markdown',
-  action VARCHAR(32) NOT NULL,
-  href VARCHAR(255) NOT NULL,
-  logo VARCHAR(255) NOT NULL,
-  loc VARCHAR(16) NOT NULL,
-  sort_order INT NOT NULL DEFAULT 0,
+  id         BIGSERIAL PRIMARY KEY,
+  title      VARCHAR(255)                NOT NULL,
+  summary    VARCHAR(2048)               NOT NULL,
+  type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
+  action     VARCHAR(32)                 NOT NULL,
+  href       VARCHAR(255)                NOT NULL,
+  logo       VARCHAR(255)                NOT NULL,
+  loc        VARCHAR(16)                 NOT NULL,
+  sort_order INT                         NOT NULL DEFAULT 0,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
-CREATE INDEX idx_cards_loc ON cards (loc);
+CREATE INDEX idx_cards_loc
+  ON cards (loc);
 
 CREATE TABLE friend_links (
-  id BIGSERIAL PRIMARY KEY,
-  title VARCHAR(255) NOT NULL,
-  home VARCHAR(255) NOT NULL,
-  logo VARCHAR(255) NOT NULL,
-  sort_order INT NOT NULL DEFAULT 0,
+  id         BIGSERIAL PRIMARY KEY,
+  title      VARCHAR(255)                NOT NULL,
+  home       VARCHAR(255)                NOT NULL,
+  logo       VARCHAR(255)                NOT NULL,
+  sort_order INT                         NOT NULL DEFAULT 0,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );

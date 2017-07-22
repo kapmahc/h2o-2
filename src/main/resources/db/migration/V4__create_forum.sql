@@ -1,6 +1,6 @@
 CREATE TABLE forum_articles (
   id         BIGSERIAL PRIMARY KEY,
-  user_id    BIGINT                      REFERENCES users,
+  user_id    BIGINT REFERENCES users,
   title      VARCHAR(255)                NOT NULL,
   body       TEXT                        NOT NULL,
   type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
@@ -29,8 +29,8 @@ CREATE TABLE forum_articles_tags (
 
 CREATE TABLE forum_comments (
   id         BIGSERIAL PRIMARY KEY,
-  article_id BIGINT                      REFERENCES forum_articles,
-  user_id    BIGINT                      REFERENCES users,
+  article_id BIGINT REFERENCES forum_articles,
+  user_id    BIGINT REFERENCES users,
   body       TEXT                        NOT NULL,
   type       VARCHAR(8)                  NOT NULL DEFAULT 'markdown',
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),

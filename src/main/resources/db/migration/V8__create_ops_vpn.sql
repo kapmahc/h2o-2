@@ -1,9 +1,9 @@
 CREATE TABLE vpn_users (
   id         BIGSERIAL PRIMARY KEY,
-  full_name  VARCHAR(255) NOT NULL,
-  email      VARCHAR(255) NOT NULL,
-  password   VARCHAR(255) NOT NULL,
-  details    TEXT NOT NULL,
+  full_name  VARCHAR(255)                NOT NULL,
+  email      VARCHAR(255)                NOT NULL,
+  password   VARCHAR(255)                NOT NULL,
+  details    TEXT                        NOT NULL,
   online     BOOLEAN                     NOT NULL DEFAULT FALSE,
   enable     BOOLEAN                     NOT NULL DEFAULT FALSE,
   start_up   DATE                        NOT NULL DEFAULT '2016-12-13',
@@ -11,8 +11,10 @@ CREATE TABLE vpn_users (
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
-CREATE UNIQUE INDEX idx_vpn_users_email ON vpn_users (email);
-CREATE INDEX idx_vpn_users_full_name ON vpn_users (full_name);
+CREATE UNIQUE INDEX idx_vpn_users_email
+  ON vpn_users (email);
+CREATE INDEX idx_vpn_users_full_name
+  ON vpn_users (full_name);
 
 CREATE TABLE vpn_logs (
   id           BIGSERIAL PRIMARY KEY,

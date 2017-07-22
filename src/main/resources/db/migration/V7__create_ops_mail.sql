@@ -9,11 +9,11 @@ CREATE UNIQUE INDEX idx_mail_domains_name
 
 CREATE TABLE mail_users (
   id         BIGSERIAL PRIMARY KEY,
-  domain_id  BIGINT                      REFERENCES mail_domains,
+  domain_id  BIGINT REFERENCES mail_domains,
   email      VARCHAR(255)                NOT NULL,
   full_name  VARCHAR(128)                NOT NULL,
   password   VARCHAR(255)                NOT NULL,
-  enable     BOOLEAN  NOT NULL,
+  enable     BOOLEAN                     NOT NULL,
   created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
@@ -24,9 +24,9 @@ CREATE INDEX idx_mail_users_full_name
 
 CREATE TABLE mail_aliases (
   id          BIGSERIAL PRIMARY KEY,
-  domain_id   BIGINT                      REFERENCES mail_domains,
+  domain_id   BIGINT REFERENCES mail_domains,
   source      VARCHAR(255)                NOT NULL,
-  destination VARCHAR(255)                REFERENCES mail_users(email),
+  destination VARCHAR(255) REFERENCES mail_users (email),
   created_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT now(),
   updated_at  TIMESTAMP WITHOUT TIME ZONE NOT NULL
 );
