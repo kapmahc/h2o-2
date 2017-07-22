@@ -58,7 +58,7 @@ public class SettingService {
     private Gson gson;
     @Resource
     SettingRepository settingRepository;
-    @Value("app.secrets.aes")
+    @Value("${app.secret}")
     String key;
     private final int salt = 16;
 }
