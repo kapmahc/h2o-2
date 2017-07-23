@@ -12,7 +12,6 @@ public class InstallController {
     //@PreAuthorize("permitAll()")
     @RequestMapping(value = "/install", method = RequestMethod.GET)
     public String getInstall(Model model) {
-        logger.error("#############");
         return "auth/install";
     }
 

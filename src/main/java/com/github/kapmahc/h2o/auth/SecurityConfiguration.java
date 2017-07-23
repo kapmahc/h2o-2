@@ -18,6 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().authorizeRequests().antMatchers(
                 HttpMethod.GET,
                 "/",
+                "/assets/**",
                 "/install",
                 "/users/sign-up",
                 "/users/confirm",

@@ -1,7 +1,10 @@
 # java
 /.gradle
 /build
+
+# test
 /tmp
+/public
 
 # node
 /node_modules
