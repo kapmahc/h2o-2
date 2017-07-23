@@ -15,6 +15,9 @@ import java.util.Date;
         }
 )
 public class Role implements Serializable {
+    public final static String ADMIN = "admin";
+
+
     @PrePersist
     protected void onCreate() {
         createdAt = new Date();
