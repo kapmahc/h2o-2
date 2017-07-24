@@ -9,7 +9,15 @@ database:
   maxWaitForConnection: 1s
   properties:
     hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate.show_sql: true
 logging:
   level: INFO
+  appenders:
+    - type: console
+    - type: file
+      currentLogFilename: ./tmp/logs/api.log
+      archivedLogFilenamePattern: ./tmp/logs/api-%d.log.gz
+      archivedFileCount: 180
+      timeZone: UTC
   loggers:
     com.github.kapmahc: DEBUG

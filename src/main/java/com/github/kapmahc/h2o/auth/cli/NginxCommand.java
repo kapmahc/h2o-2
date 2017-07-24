@@ -5,7 +5,7 @@ import io.dropwizard.setup.Bootstrap;
 import net.sourceforge.argparse4j.inf.Namespace;
 import net.sourceforge.argparse4j.inf.Subparser;
 
-public class NginxCommand  extends Command {
+public class NginxCommand extends Command {
     public NginxCommand() {
         super("nginx", "Generate a nginx.conf file");
     }
@@ -27,6 +27,6 @@ public class NginxCommand  extends Command {
 
     @Override
     public void run(Bootstrap<?> bootstrap, Namespace namespace) throws Exception {
-    System.out.println("hostname "+namespace.getString("host"));
+        System.out.println("hostname " + namespace.getString("host"));
     }
 }

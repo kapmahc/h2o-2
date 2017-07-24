@@ -29,3 +29,5 @@ mvn dependency:sources
 
 - [sdkman](http://sdkman.io/usage.html)
 - [dropwizard](http://www.dropwizard.io)
+- [hibernate](https://docs.jboss.org/hibernate/orm/current/userguide/html_single/Hibernate_User_Guide.html)
+- [dropwizard](http://www.dropwizard.io/1.1.2/docs/manual/index.html)

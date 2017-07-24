@@ -1,12 +1,13 @@
 package com.github.kapmahc;
 
-import com.github.kapmahc.h2o.auth.dao.LocaleDao;
+import com.github.kapmahc.h2o.auth.cli.NginxCommand;
 import com.github.kapmahc.h2o.auth.health.DatabaseHealth;
 import com.github.kapmahc.h2o.auth.health.RabbitMQHealth;
+import com.github.kapmahc.h2o.auth.health.RedisHealth;
 import com.github.kapmahc.h2o.auth.models.Locale;
 import com.github.kapmahc.h2o.auth.resources.LocaleResource;
-import com.github.kapmahc.h2o.auth.cli.NginxCommand;
-import com.github.kapmahc.h2o.auth.health.RedisHealth;
+import com.github.kapmahc.h2o.auth.dao.LocaleDao;
+import com.github.kapmahc.h2o.auth.dao.impl.LocaleDaoImpl;
 import com.github.kapmahc.h2o.auth.tasks.BackupTask;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
@@ -50,12 +51,13 @@ public class H2OApplication extends Application<H2OConfiguration> {
             @Override
             protected void configure() {
                 bind(cfg).to(H2OConfiguration.class);
-                bind(new LocaleDao(hibernate.getSessionFactory())).to(LocaleDao.class);
+                bind(new LocaleDaoImpl(hibernate.getSessionFactory())).to(LocaleDao.class);
             }
         });
 
         // resources
         env.jersey().register(LocaleResource.class);
+        // services
         // health checks
         env.healthChecks().register("redis", new RedisHealth());
         env.healthChecks().register("database", new DatabaseHealth());

@@ -20,6 +20,12 @@
             <column name="message" type="text">
                 <constraints nullable="false"/>
             </column>
+            <column name="updated_at" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp without time zone">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <createIndex tableName="locales" indexName="idx_locale_lang_code" unique="true">
             <column name="lang"/>

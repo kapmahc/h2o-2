@@ -8,6 +8,7 @@ public class DatabaseHealth extends HealthCheck {
     protected Result check() throws Exception {
         return Result.healthy();
     }
+
     public DatabaseHealth() {
     }
 }
