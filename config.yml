@@ -1,5 +1,11 @@
-host: www.change-me.com
-theme: bootstrap
+secret: zeelohV6Huliem8Lahb2oe9ziechahga
+database:
+  driverClass: org.postgresql.Driver
+  url: jdbc:postgresql://localhost:5432/h2o_dev
+  user: postgres
+  password:
+  validationQuery: SELECT 1
+  maxSize: 32
 logging:
   level: INFO
   loggers:

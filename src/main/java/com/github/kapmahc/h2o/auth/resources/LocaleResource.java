@@ -22,13 +22,8 @@ public class LocaleResource {
 //    @CacheControl(maxAge = 6, maxAgeUnit = TimeUnit.HOURS)
     public Locale getLocale(@QueryParam("code") Optional<String> code) {
         Locale l = new Locale();
-        l.setCode(code.orElse(theme));
+        l.setCode(code.orElse(""));
         return l;
     }
 
-    public LocaleResource(String theme) {
-        this.theme = theme;
-    }
-
-    private final String theme;
 }

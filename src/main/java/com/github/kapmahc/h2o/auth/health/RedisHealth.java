@@ -5,16 +5,14 @@ import com.codahale.metrics.health.HealthCheck;
 public class RedisHealth extends HealthCheck {
     @Override
     protected Result check() throws Exception {
-        if (host == null) {
+        if ("" == null) {
             return Result.unhealthy("host is null");
         }
         return Result.healthy();
     }
 
-    public RedisHealth(String host) {
-        this.host = host;
+    public RedisHealth() {
     }
 
-    private final String host;
 
 }

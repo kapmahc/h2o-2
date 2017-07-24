@@ -2,41 +2,36 @@ package com.github.kapmahc;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.dropwizard.db.DataSourceFactory;
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 class H2OConfiguration extends Configuration {
     @NotEmpty
+    @Size(min = 32, max = 32)
     @JsonProperty
-    private String theme;
+    private String secret;
+    @Valid
+    @NotNull
+    private DataSourceFactory database = new DataSourceFactory();
 
-    @NotEmpty
-    @JsonProperty
-    private String host;
-
-    @JsonProperty
-    private boolean https;
-
-    public String getTheme() {
-        return theme;
+    public String getSecret() {
+        return secret;
     }
 
-    public void setTheme(String theme) {
-        this.theme = theme;
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
-    public String getHost() {
-        return host;
+    public DataSourceFactory getDatabase() {
+        return database;
     }
 
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public boolean isHttps() {
-        return https;
-    }
-
-    public void setHttps(boolean https) {
-        this.https = https;
+    public void setDatabase(DataSourceFactory database) {
+        this.database = database;
     }
 }
