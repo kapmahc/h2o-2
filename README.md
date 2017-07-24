@@ -19,5 +19,13 @@ mvn package
 java -jar target/h2o-1.0-SNAPSHOT.jar server config.yml
 ```
 
+## Development
+```bash
+# download sources
+mvn dependency:sources
+```
+
+
+
 - [sdkman](http://sdkman.io/usage.html)
 - [dropwizard](http://www.dropwizard.io)
