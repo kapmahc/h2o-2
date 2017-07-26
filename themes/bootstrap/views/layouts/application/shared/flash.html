@@ -6,7 +6,6 @@
   <strong>{{t .locale "flashs.error"}}</strong>
   <p><ul><li>{{str2html .flash.error}}</li></ul></p>
 </div>
-<br/>
 {{end}}
 {{if .flash.warning}}
 <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -16,7 +15,6 @@
   <strong>{{t .locale "flashs.warning"}}</strong>
   <p><ul><li>{{str2html .flash.warning}}</li></ul></p>
 </div>
-<br/>
 {{end}}
 {{if .flash.notice}}
 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -26,5 +24,4 @@
   <strong>{{t .locale "flashs.notice"}}</strong>
   <p><ul><li>{{str2html .flash.notice}}</li></ul></p>
 </div>
-<br/>
 {{end}}

@@ -24,6 +24,20 @@ func (p *HomeController) Index() {
 	p.TplName = "site/index.html"
 }
 
+// Search search
+// @router /search [post]
+func (p *HomeController) Search() {
+	p.SetApplicationLayout()
+	p.TplName = "site/search.html"
+}
+
+// Dashboard dashboard
+// @router /dashboard [get]
+func (p *HomeController) Dashboard() {
+	p.SetDashboardLayout()
+	p.TplName = "site/dashboard.html"
+}
+
 type fmInstall struct {
 	Title                string `form:"title" valid:"Required"`
 	SubTitle             string `form:"subTitle" valid:"Required"`
@@ -65,7 +79,7 @@ func (p *HomeController) Install() {
 		var user *auth.User
 		ip := p.Ctx.Input.IP()
 		if err == nil {
-			user, err = auth.AddEmailUser(fm.Email, fm.Password, ip, p.Locale)
+			user, err = auth.AddEmailUser(fm.Name, fm.Email, fm.Password, ip, p.Locale)
 		}
 		if err == nil {
 			err = auth.ConfirmUser(user.ID, ip, p.Locale)

@@ -1,6 +1,9 @@
 {{template "layouts/application/shared/metas.html" .}}
+  {{assets_css "/static/css/application.css"}}
+</head>
+<body>
 <div class="container">
-  <br/>
+  {{template "layouts/application/shared/header.html" .}}  
   {{.LayoutContent}}
   {{template "layouts/application/shared/footer.html" .}}
 </div>

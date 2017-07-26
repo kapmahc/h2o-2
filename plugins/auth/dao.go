@@ -31,7 +31,7 @@ func getRole(role, rty string, rid uint) (*Role, error) {
 func getPolicy(user, role uint) (*Policy, error) {
 	var it Policy
 	o := orm.NewOrm()
-	err := o.QueryTable(&it).Filter("user_id", user).Filter("role_id", role).One(&it, "id")
+	err := o.QueryTable(&it).Filter("user_id", user).Filter("role_id", role).One(&it, "id", "start_up", "shut_down")
 	return &it, err
 }
 
@@ -120,7 +120,7 @@ func ConfirmUser(id uint, ip, lang string) error {
 }
 
 // AddEmailUser add user by email
-func AddEmailUser(email, password, ip, lang string) (*User, error) {
+func AddEmailUser(name, email, password, ip, lang string) (*User, error) {
 	o := orm.NewOrm()
 
 	cnd := orm.NewCondition()
@@ -136,6 +136,7 @@ func AddEmailUser(email, password, ip, lang string) (*User, error) {
 	}
 
 	user := User{
+		Name:         name,
 		Email:        email,
 		Password:     string(nut.Sum([]byte(password))),
 		ProviderType: UserTypeEmail,

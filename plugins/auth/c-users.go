@@ -90,7 +90,7 @@ func (p *UsersController) SignUp() {
 
 		err := p.Bind(&fm)
 		if err == nil {
-			user, err = AddEmailUser(fm.Email, fm.Password, ip, p.Locale)
+			user, err = AddEmailUser(fm.Name, fm.Email, fm.Password, ip, p.Locale)
 		}
 		if err == nil {
 			err = p.sendEmail(user, p.Locale, actConfirm)
@@ -298,4 +298,16 @@ func (p *UsersController) ResetPassword() {
 	p.SetApplicationLayout()
 	p.Data["title"] = i18n.Tr(p.Locale, "auth.users.reset-password.title")
 	p.TplName = "auth/users/reset-password.html"
+}
+
+// SignOut sign-out
+// @router /sign-out [delete]
+func (p *UsersController) SignOut() {
+	user := p.CurrentUser
+	if user != nil {
+		AddLog(user.ID, p.Ctx.Input.IP(), p.Locale, "auth.logs.sign-out")
+	}
+	p.DestroySession()
+	p.Data["json"] = map[string]interface{}{"ok": true}
+	p.ServeJSON()
 }

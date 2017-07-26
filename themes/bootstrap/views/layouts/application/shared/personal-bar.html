@@ -1,0 +1,35 @@
+<li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" id="personal-bar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    {{if .currentUser}}
+      {{t .locale "personal-bar.welcome" .currentUser.name}}
+    {{else}}
+      {{t .locale "personal-bar.sign-in-or-up"}}
+    {{end}}
+  </a>
+  <div class="dropdown-menu" aria-labelledby="dropdown01">
+    {{if .currentUser}}
+      <a href="{{urlfor "site.HomeController.Dashboard"}}" class="dropdown-item">
+        {{t .locale "personal-bar.dashboard"}}
+      </a>
+      <a data-method="delete" data-next="{{urlfor "auth.UsersController.SignIn"}}" data-confirm="{{t .locale "messages.are-you-sure"}}" href="{{urlfor "auth.UsersController.SignOut"}}" class="dropdown-item">
+        {{t .locale "personal-bar.sign-out"}}
+      </a>
+    {{else}}
+      <a href="{{urlfor "auth.UsersController.SignIn"}}" class="dropdown-item">
+        {{t .locale "auth.users.sign-in.title"}}
+      </a>
+      <a href="{{urlfor "auth.UsersController.SignUp"}}" class="dropdown-item">
+        {{t .locale "auth.users.sign-up.title"}}
+      </a>
+      <a href="{{urlfor "auth.UsersController.ForgotPassword"}}" class="dropdown-item">
+        {{t .locale "auth.users.forgot-password.title"}}
+      </a>
+      <a href="{{urlfor "auth.UsersController.Confirm"}}" class="dropdown-item">
+        {{t .locale "auth.users.confirm.title"}}
+      </a>
+      <a href="{{urlfor "auth.UsersController.Unlock"}}" class="dropdown-item">
+        {{t .locale "auth.users.unlock.title"}}
+      </a>
+    {{end}}
+  </div>
+</li>
