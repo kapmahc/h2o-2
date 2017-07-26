@@ -89,6 +89,11 @@ func Deny(user uint, role, rty string, rid uint, days uint) error {
 	return err
 }
 
+// Is is role?
+func Is(user uint, role string) bool {
+	return Can(user, role, DefaultResourceType, DefaultResourceID)
+}
+
 // Can check policy
 func Can(user uint, role, rty string, rid uint) bool {
 	ro, err := getRole(role, rty, rid)

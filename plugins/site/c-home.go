@@ -3,6 +3,7 @@ package site
 import (
 	"net/http"
 
+	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
 	"github.com/astaxie/beego/validation"
 	"github.com/beego/i18n"
@@ -12,12 +13,14 @@ import (
 
 // HomeController home
 type HomeController struct {
-	nut.Controller
+	auth.Controller
 }
 
 // Index home
 // @router / [get]
 func (p *HomeController) Index() {
+	p.SetApplicationLayout()
+	beego.Debug(p.Data)
 	p.TplName = "site/index.html"
 }
 

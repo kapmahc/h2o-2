@@ -15,7 +15,7 @@ const (
 
 // UsersController users
 type UsersController struct {
-	nut.Controller
+	Controller
 }
 
 type fmSignIn struct {
@@ -55,7 +55,6 @@ func (p *UsersController) SignIn() {
 		if err == nil {
 			AddLog(user.ID, ip, p.Locale, "auth.logs.sign-in-success")
 			p.SetSession("uid", user.UID)
-			p.SetSession("name", user.Name)
 			p.Success(nut.T(p.Locale, "auth.messages.sign-in-success"), "/")
 		} else {
 			p.Fail(err, p.signInPath())

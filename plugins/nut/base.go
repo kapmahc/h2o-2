@@ -128,6 +128,7 @@ func (p *Controller) detectLocale() {
 	// Set language properties.
 	p.Locale = lang
 	p.Data[key] = lang
+	p.Data["languages"] = i18n.ListLangs()
 }
 
 func init() {
