@@ -2,8 +2,8 @@
   {{assets_css "/static/css/application.css"}}
 </head>
 <body>
+{{template "layouts/application/shared/header.html" .}}  
 <div class="container">
-  {{template "layouts/application/shared/header.html" .}}  
   {{.LayoutContent}}
   {{template "layouts/application/shared/footer.html" .}}
 </div>

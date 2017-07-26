@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{.locale}}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="icon" type="image/png" href="/static/img/favicon.png" />
+    <title>{{.title}}|{{t .locale "site.sub-title"}}|{{t .locale "site.title"}}</title>
+    <meta name="_xsrf" content="{{.xsrf_token}}" />
+    
+    {{assets_css "/3rd/material-design-icons/iconfont/material-icons.css"}}
+    <link type="text/css" rel="stylesheet" href="/3rd/materialize-css/dist/css/materialize.min.css" media="screen,projection"/>
+
+    {{assets_js "/3rd/jquery/dist/jquery.min.js"}}
+    {{assets_js "/3rd/materialize-css/dist/js/materialize.min.js"}}
+    {{assets_js "/static/js/main.js"}}

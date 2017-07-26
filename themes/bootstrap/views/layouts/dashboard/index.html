@@ -1,0 +1,11 @@
+{{template "layouts/dashboard/shared/metas.html" .}}
+  {{assets_css "/static/css/dashboard.css"}}
+</head>
+<body>
+{{template "layouts/dashboard/shared/header.html" .}}
+<div class="container">
+  {{.LayoutContent}}
+  {{template "layouts/dashboard/shared/footer.html" .}}
+</div>
+</body>
+</html>
