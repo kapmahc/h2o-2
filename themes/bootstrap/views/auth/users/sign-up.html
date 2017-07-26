@@ -1,12 +1,12 @@
 <div class="col-lg-6 offset-lg-3">
-{{template "shared/title.html" .title}}
-{{template "shared/flash.html" .}}
+{{template "layouts/application/shared/title.html" .title}}
+{{template "layouts/application/shared/flash.html" .}}
 <form method="post">
   {{ .xsrf }}
-  {{template "shared/form/text-input.html" dict "id" "name" "value" "" "locale" .locale "label" "attributes.fullName" "help" nil}}
-  {{template "shared/form/email-input.html" dict "id" "email" "value" "" "locale" .locale "label" "attributes.email" "help" "helps.email"}}
-  {{template "shared/form/password-input.html" dict "locale" .locale "confirm" true}}
-  {{template "shared/form/buttons.html" dict "locale" .locale}}
+  {{template "layouts/application/shared/form/text-input.html" dict "id" "name" "value" "" "locale" .locale "label" "attributes.fullName" "help" nil}}
+  {{template "layouts/application/shared/form/email-input.html" dict "id" "email" "value" "" "locale" .locale "label" "attributes.email" "help" "helps.email"}}
+  {{template "layouts/application/shared/form/password-input.html" dict "locale" .locale "confirm" true}}
+  {{template "layouts/application/shared/form/buttons.html" dict "locale" .locale}}
 </form>
 {{template "auth/non-sign-in.html" .}}
 </div>

@@ -78,12 +78,12 @@ func (p *Controller) Fail(err error, url string) {
 
 // SetApplicationLayout using application layout
 func (p *Controller) SetApplicationLayout() {
-	p.Layout = "layouts/application.html"
+	p.Layout = "layouts/application/index.html"
 }
 
 // SetDashboardLayout using dashboard layout
 func (p *Controller) SetDashboardLayout() {
-	p.Layout = "layouts/dashboard.html"
+	p.Layout = "layouts/dashboard/index.html"
 }
 
 func (p *Controller) detectLocale() {
