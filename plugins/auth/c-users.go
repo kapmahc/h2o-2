@@ -18,10 +18,48 @@ type UsersController struct {
 	nut.Controller
 }
 
+type fmSignIn struct {
+	Email    string `form:"email" valid:"Email;Required"`
+	Password string `form:"password" valid:"Required"`
+}
+
 // SignIn sign in
 // @router /sign-in [get,post]
 func (p *UsersController) SignIn() {
 	if p.Ctx.Request.Method == http.MethodPost {
+		var fm fmSignIn
+		var user *User
+		ip := p.Ctx.Input.IP()
+
+		err := p.Bind(&fm)
+		if err == nil {
+			user, err = GetUserByEmail(fm.Email)
+		}
+		if err == nil {
+			if !nut.Chk([]byte(fm.Password), []byte(user.Password)) {
+				AddLog(user.ID, ip, p.Locale, "auth.logs.sign-in-failed")
+				err = nut.E(p.Locale, "auth.errors.user-bad-password")
+			}
+		}
+		if err == nil {
+			if !user.IsConfirm() {
+				err = nut.E(p.Locale, "auth.errors.user-is-not-confirm")
+			}
+		}
+		if err == nil {
+			if user.IsLock() {
+				err = nut.E(p.Locale, "auth.errors.user-is-lock")
+			}
+		}
+
+		if err == nil {
+			AddLog(user.ID, ip, p.Locale, "auth.logs.sign-in-success")
+			p.SetSession("uid", user.UID)
+			p.SetSession("name", user.Name)
+			p.Success(nut.T(p.Locale, "auth.messages.sign-in-success"), "/")
+		} else {
+			p.Fail(err, p.signInPath())
+		}
 		return
 	}
 	// http get

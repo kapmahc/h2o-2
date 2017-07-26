@@ -1,5 +1,6 @@
 <div class="col-lg-6 offset-lg-3">
 {{template "shared/title.html" .title}}
+{{template "shared/flash.html" .}}
 <form method="post">
   {{ .xsrf }}
   {{template "shared/form/text-input.html" dict "id" "name" "value" "" "locale" .locale "label" "attributes.fullName" "help" nil}}
