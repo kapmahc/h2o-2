@@ -1,0 +1,10 @@
+
+# vim
+.*.swp
+.*.un~
+
+# test
+/tmp
+/etc
+/public
+/config.toml
