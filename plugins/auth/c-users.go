@@ -31,9 +31,9 @@ func (p *UsersController) SignIn() {
 }
 
 type fmSignUp struct {
-	Name                 string `form:"name" valid:"MaxSize(32)"`
+	Name                 string `form:"name" valid:"Required;MaxSize(32)"`
 	Email                string `form:"email" valid:"Email;MaxSize(255)"`
-	Password             string `form:"password" valid:"Required"`
+	Password             string `form:"password" valid:"MinSize(6)"`
 	PasswordConfirmation string `form:"passwordConfirmation" `
 }
 
@@ -190,13 +190,75 @@ func (p *UsersController) GetUnlockToken() {
 }
 
 // ForgotPassword forgot password
-// @router /forogot-password [get, post]
+// @router /forogot-password [get,post]
 func (p *UsersController) ForgotPassword() {
 	if p.Ctx.Request.Method == http.MethodPost {
+		var fm fmEmail
+		var user *User
+
+		err := p.Bind(&fm)
+		if err == nil {
+			user, err = GetUserByEmail(fm.Email)
+		}
+		if err == nil {
+			err = p.sendEmail(user, p.Locale, actResetPassword)
+		}
+		if err == nil {
+			p.Success(nut.T(p.Locale, "auth.messages.email-for-reset-password"), p.signInPath())
+		} else {
+			p.Fail(err, p.URLFor("auth.UsersController.ForgotPassword"))
+		}
 		return
 	}
 	// http get
 	p.SetApplicationLayout()
 	p.Data["title"] = i18n.Tr(p.Locale, "auth.users.forgot-password.title")
 	p.TplName = emailFormTpl
+}
+
+type fmResetPassword struct {
+	Password             string `form:"password" valid:"MinSize(6)"`
+	PasswordConfirmation string `form:"passwordConfirmation" `
+}
+
+func (p *fmResetPassword) Valid(v *validation.Validation) {
+	if p.Password != p.PasswordConfirmation {
+		v.SetError("PasswordConfirmation", "Passwords not match")
+	}
+}
+
+// ResetPassword reset password
+// @router /reset-password/:token [get,post]
+func (p *UsersController) ResetPassword() {
+	if p.Ctx.Request.Method == http.MethodPost {
+		token := p.Ctx.Input.Param(":token")
+		var fm fmResetPassword
+		var user *User
+
+		err := p.Bind(&fm)
+		if err == nil {
+			user, err = p.parseToken(p.Locale, token, actResetPassword)
+		}
+
+		if err == nil {
+			o := orm.NewOrm()
+			_, err = o.QueryTable(new(User)).Filter("id", user.ID).Update(orm.Params{
+				"password": string(nut.Sum([]byte(fm.Password))),
+			})
+		}
+		if err == nil {
+			err = AddLog(user.ID, p.Ctx.Input.IP(), p.Locale, "auth.logs.reset-password")
+		}
+
+		if err == nil {
+			p.Success(nut.T(p.Locale, "auth.messages.reset-password-success"), p.signInPath())
+		} else {
+			p.Fail(err, p.URLFor("auth.UsersController.ResetPassword", ":token", token))
+		}
+		return
+	}
+	// http get
+	p.SetApplicationLayout()
+	p.Data["title"] = i18n.Tr(p.Locale, "auth.users.reset-password.title")
+	p.TplName = "auth/users/reset-password.html"
 }

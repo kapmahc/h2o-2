@@ -24,9 +24,9 @@ func (p *HomeController) Index() {
 type fmInstall struct {
 	Title                string `form:"title" valid:"Required"`
 	SubTitle             string `form:"subTitle" valid:"Required"`
-	Name                 string `form:"name" valid:"MaxSize(32)"`
+	Name                 string `form:"name" valid:"Required;MaxSize(32)"`
 	Email                string `form:"email" valid:"Email;MaxSize(255)"`
-	Password             string `form:"password" valid:"Required"`
+	Password             string `form:"password" valid:"MinSize(6)"`
 	PasswordConfirmation string `form:"passwordConfirmation" `
 }
 
@@ -77,6 +77,7 @@ func (p *HomeController) Install() {
 		}
 
 		if err == nil {
+			p.Success(nut.T(p.Locale, "auth.messages.confirm-success"), p.URLFor("auth.UsersController.SignIn"))
 			p.Redirect(p.URLFor("auth.UsersController.SignIn"), http.StatusFound)
 		} else {
 			p.Fail(err, p.URLFor("site.HomeController.Install"))
@@ -87,5 +88,5 @@ func (p *HomeController) Install() {
 	// http get
 	p.SetApplicationLayout()
 	p.Data["title"] = i18n.Tr(p.Locale, "site.install.title")
-	p.TplName = "nut/install.html"
+	p.TplName = "site/install.html"
 }
