@@ -1,4 +1,5 @@
-{{template "shared/title.html" .title}}    
+<div class="col-lg-6 offset-lg-3">
+{{template "shared/title.html" .title}}
 <form method="post">
   {{ .xsrf }}
   {{template "shared/form/text-input.html" dict "id" "title" "value" "" "locale" .locale "label" "site.attributes.title" "help" nil}}
@@ -8,3 +9,4 @@
   {{template "shared/form/password-input.html" dict "locale" .locale "confirm" true}}
   {{template "shared/form/buttons.html" dict "locale" .locale}}
 </form>
+</div>
